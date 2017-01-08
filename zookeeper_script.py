@@ -20,7 +20,7 @@ cd kafka/config
 # download kafka server.properties
 call(["wget", KAFKA_SERVER_CONFIG_LOCATION])
 call(["./kafka/bin/zookeeper-server-stop.sh"])
-call(["./kafka/bin/zookeeper-server-start.sh", "--daemon", "./kafka/config/zookeeper.properties"])
+call(["./kafka/bin/zookeeper-server-start.sh", "-daemon", "./kafka/config/zookeeper.properties"])
 
 call(["./kafka/bin/kafka-server-stop.sh"])
-call(["./kafka/bin/kafka-server-start.sh --daemon config/server.properties"])
+call(["./kafka/bin/kafka-server-start.sh -daemon config/server.properties"])
