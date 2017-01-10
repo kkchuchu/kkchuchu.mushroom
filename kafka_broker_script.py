@@ -32,12 +32,17 @@ os.system("ln -s kafka_2.11-0.10.1.0 kafka")
 os.system("wget " + KAFKA_SERVER_CONFIG_LOCATION)
 
 server_url = sys.argv[1]
+broker_id = sys.argv[2]
 with open(KAFKA_SERVER_CONFIG) as ramp:
     with open("./kafka/config/server.properties", "w+") as sink:
         for line in ramp:
             url_parameter = "{SERVER_URL}"
+            id_parameter = "{BROKER_ID}"
             if url_parameter  in line:
                 line = line.replace(url_parameter, server_url)
+                sink.write(line + "\n")
+            if id_parameter in line:
+                line = line.replace(id_parameter, broker_id)
                 sink.write(line + "\n")
 
 os.system("./kafka/bin/kafka-server-stop.sh")
