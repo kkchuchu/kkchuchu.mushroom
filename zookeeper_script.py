@@ -4,7 +4,7 @@
 Deploying zookeeper and kafka to Google Compute Engine
 """
 from subprocess import call
-import sys
+import sys, os
 
 # install java
 os.system("apt-get update")
@@ -33,7 +33,7 @@ with open(KAFKA_SERVER_CONFIG) as ramp:
             url_parameter = "{SERVER_URL}"
             if url_parameter  in line:
                 line = line.replace(url_parameter, server_url)
-                sink.writeline(line)
+                sink.write(line + "\n")
 os.system("./kafka/bin/zookeeper-server-stop.sh")
 os.system("./kafka/bin/zookeeper-server-start.sh -daemon ./kafka/config/zookeeper.properties")
 
