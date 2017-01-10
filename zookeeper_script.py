@@ -33,7 +33,8 @@ with open(KAFKA_SERVER_CONFIG) as ramp:
             url_parameter = "{SERVER_URL}"
             if url_parameter  in line:
                 line = line.replace(url_parameter, server_url)
-                sink.write(line + "\n")
+            sink.write(line + "\n")
+            
 os.system("./kafka/bin/zookeeper-server-stop.sh")
 os.system("./kafka/bin/zookeeper-server-start.sh -daemon ./kafka/config/zookeeper.properties")
 

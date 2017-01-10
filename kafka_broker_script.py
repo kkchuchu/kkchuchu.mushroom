@@ -40,10 +40,9 @@ with open(KAFKA_SERVER_CONFIG) as ramp:
             id_parameter = "{BROKER_ID}"
             if url_parameter  in line:
                 line = line.replace(url_parameter, server_url)
-                sink.write(line + "\n")
             if id_parameter in line:
                 line = line.replace(id_parameter, broker_id)
-                sink.write(line + "\n")
+            sink.write(line + "\n")
 
 os.system("./kafka/bin/kafka-server-stop.sh")
 os.system("./kafka/bin/kafka-server-start.sh -daemon ./kafka/config/server.properties")
