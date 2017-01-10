@@ -36,7 +36,7 @@ listeners=PLAINTEXT://:9092
 # Hostname and port the broker will advertise to producers and consumers. If not set,
 # it uses the value for "listeners" if configured.  Otherwise, it will use the value
 # returned from java.net.InetAddress.getCanonicalHostName().
-advertised.listeners=PLAINTEXT://104.199.234.41:9092
+advertised.listeners=PLAINTEXT://{SERVER_URL}:9092
 
 # The number of threads handling network requests
 num.network.threads=3
@@ -113,7 +113,7 @@ log.retention.check.interval.ms=300000
 # server. e.g. "127.0.0.1:3000,127.0.0.1:3001,127.0.0.1:3002".
 # You can also append an optional chroot string to the urls to specify the
 # root directory for all kafka znodes.
-zookeeper.connect=104.199.234.41:2181
+zookeeper.connect={SERVER_URL}:2181
 
 # Timeout in ms for connecting to zookeeper
 zookeeper.connection.timeout.ms=6000
