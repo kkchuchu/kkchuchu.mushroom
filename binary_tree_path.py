@@ -1,5 +1,7 @@
 import os
-
+"""
+https://leetcode.com/problems/binary-tree-paths/
+"""
 class TreeNode:
     def __init__(self, x):
         self.val = x
@@ -7,6 +9,9 @@ class TreeNode:
         self.right = None
 
 class Solution(object):
+    """
+    From bottom to root, chain node to path.
+    """
     def binaryTreePaths(self, root):
         if not root:
             return []
