@@ -6,18 +6,17 @@ class Solution(object):
         :type n: int
         :rtype: int
         """
-        self.db = [0 for i in range(n+1)]
+        self.db = [[0 for i in range(n+1)] for j in range(n+1)]
         self.r(n)
-        return self.db[n]
+        return self.db[1][n]
         
     def r(self, n):
-        for i in range(2, n+1):
-            if i == 2:
-                self.db[i] = 1
-            elif i == 3:
-                self.db[3] = 2
-            else:
-                self.db[i] = min([self.db[i-2] + i-1, max(i-2 + i-1, self.db[i-3] + i-2), max(self.db[i-4] + i-3, i-3 + i-1)])
+        for j in range(1, n+1):
+            for i in range(j-1, 0, -1):
+                if j-i == 1:
+                    self.db[i][j] = i
+                else:
+                    self.db[i][j] = min([max(mid + self.db[i][mid-1], mid + self.db[mid+1][j]) for mid in range(i, j)])
 
 
 if __name__ == '__main__':
