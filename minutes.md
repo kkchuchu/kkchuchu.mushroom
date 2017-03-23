@@ -1,4 +1,6 @@
-## 網路問題 -minutes
+## Linux -minutes
+
+### 網路問題
 
 ``` sh
 nslookup
@@ -12,6 +14,7 @@ NXDomain == Non-Existent domain
 ``` sh
 find . -name "*.png" -o -name "*.jpg" -o -name "*.gif" -type f
 ```
+
 
 ## Vim -minutes
 
@@ -42,12 +45,13 @@ Enough of context, let's go to the solution
 ### NERDTREE Change Directory
 - cd: change the CWD to the selected dir
 - CD: change tree root to CWD
--
+
 ### Reference
 - https://www.cheatography.com/stepk/cheat-sheets/vim-nerdtree/
 
 
 ## Python -minutes
+
 ### Multi-threads
 
 ![multi-treads](https://www.tutorialspoint.com/operating_system/images/thread_processes.jpg)
@@ -67,6 +71,36 @@ Refer this [Link](http://zhuoqiang.me/python-thread-gil-and-ctypes.html)
 
 Yes! A lock is necessary. Look django dispatch.dispatcher.Signal.
 This means module variable is shared by threads.
+
+### += is not thread safe
+
+``` python
+import threading
+lock = threading.Lock()
+x = 0
+def foo():
+   global x
+   for i in xrange(1000000):
+       # with lock:    # Uncomment this to get the right answer
+            x += 1
+threads = [threading.Thread(target=foo), threading.Thread(target=foo)]
+for t in threads:
+    t.daemon = True    
+    t.start()
+for t in threads:
+    t.join()
+
+print(x)
+```
+yields:
+
+% test.py
+
+1539065
+
+% test.py 
+
+1436487
 
 ### property
 ``` python
@@ -100,6 +134,7 @@ c1 = coro1()
 ```
 
 c1 is a coroutine object
+
 await 表达式只有在本地协程(coroutine)函数里才是有效的
 
 ### \_\_init__ vs \_\_call__
@@ -133,9 +168,7 @@ import os
 def rm(filename):
     os.remove(filename)
 ```
-
-Python is somewhat of a sneaky snake when it comes to imports and managing modules. At runtime, the mymodule module has its own os which is imported into its own local scope in the module.
-
+The variable in a module would be shared across modules and threads, thus lock is needed.
 
 ### mock.patch
 
@@ -184,3 +217,6 @@ class RmTestCase(unittest.TestCase):
 ```
 
 Notice that decorator patch order and mock object property assign
+
+### Singleton
+[is there a simple elegant way to define singletons](http://stackoverflow.com/questions/31875/is-there-a-simple-elegant-way-to-define-singletons)
