@@ -15,6 +15,11 @@ NXDomain == Non-Existent domain
 find . -name "*.png" -o -name "*.jpg" -o -name "*.gif" -type f
 ```
 
+### curl with header
+
+``` sh
+curl -v -H {header} -X POST {url}
+```
 
 ## Vim -minutes
 
@@ -220,3 +225,9 @@ Notice that decorator patch order and mock object property assign
 
 ### Singleton
 [is there a simple elegant way to define singletons](http://stackoverflow.com/questions/31875/is-there-a-simple-elegant-way-to-define-singletons)
+
+### linux slab allocator
+
+```sh
+slabtop
+```
