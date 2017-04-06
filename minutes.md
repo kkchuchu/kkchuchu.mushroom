@@ -21,6 +21,11 @@ find . -name "*.png" -o -name "*.jpg" -o -name "*.gif" -type f
 curl -v -H {header} -X POST {url}
 ```
 
+Example:
+``` sh
+curl -v -H 'Host:157.166.226.25' -H 'Accept-Language: es' -X POST www.google.com
+```
+
 ## Vim -minutes
 
 ### (ctrl-c ctrl-c)Send message from vim to other session
