@@ -236,3 +236,34 @@ Notice that decorator patch order and mock object property assign
 ```sh
 slabtop
 ```
+
+### Git update submodule
+
+``` sh
+git submodule update
+```
+
+### Python Multiprocessing Module
+
+Restructure your code so that the f() function is defined before you create instance of Pool. 
+
+Otherwise the worker cannot see your function.
+``` python
+from multiprocessing import Pool
+
+def f(x):
+    return x*x
+
+p = Pool(1)
+p.map(f, [1, 2, 3])
+```
+
+### Multiprocessing PicklingError
+
+The problem is that the pool methods all use a queue.Queue to pass tasks to the worker processes. 
+
+Everything that goes through the queue.Queue must be pickable, and foo.work is not picklable since it is not defined at the top level of the module.
+
+It can be fixed by defining a function at the top level, which calls foo.work():
+
+[reference](http://stackoverflow.com/questions/8804830/python-multiprocessing-pickling-error)
