@@ -267,3 +267,9 @@ Everything that goes through the queue.Queue must be pickable, and foo.work is n
 It can be fixed by defining a function at the top level, which calls foo.work():
 
 [reference](http://stackoverflow.com/questions/8804830/python-multiprocessing-pickling-error)
+
+### Python for, break and else
+
+Loop statements may have an else clause; it is executed when the loop terminates through exhaustion of the list (with for) or when the condition becomes false (with while), but not when the loop is terminated by a break statement. This is exemplified by the following loop, which searches for prime numbers.
+
+[reference](https://docs.python.org/2/tutorial/controlflow.html)
