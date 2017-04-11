@@ -268,6 +268,23 @@ It can be fixed by defining a function at the top level, which calls foo.work():
 
 [reference](http://stackoverflow.com/questions/8804830/python-multiprocessing-pickling-error)
 
+#### process join and start method:
+
+The details can read the documents. [reference](https://docs.python.org/2/library/multiprocessing.html)
+
+Join method is called by the process who create its and this method is blocking calling method until called prcoess complete.
+
+#### multiprocess pool: pool join after close method
+
+close method is to prevent any process being submitted to the pool.
+
+join: wait for all processes to exit.
+
+``` python 
+pool.close()
+pool.join()
+```
+
 ### Python for, break and else
 
 Loop statements may have an else clause; it is executed when the loop terminates through exhaustion of the list (with for) or when the condition becomes false (with while), but not when the loop is terminated by a break statement. This is exemplified by the following loop, which searches for prime numbers.
