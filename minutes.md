@@ -290,3 +290,12 @@ pool.join()
 Loop statements may have an else clause; it is executed when the loop terminates through exhaustion of the list (with for) or when the condition becomes false (with while), but not when the loop is terminated by a break statement. This is exemplified by the following loop, which searches for prime numbers.
 
 [reference](https://docs.python.org/2/tutorial/controlflow.html)
+
+
+### Screen Example
+
+Try control+a, then escape. After that, you should be able to move your cursor around using the arrow keys.
+
+screen -S minecraft -X stuff "stop $(echo -ne '\r')"
+
+screen -S name # naming a new window
