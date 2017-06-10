@@ -20,11 +20,8 @@ Plug 'jistr/vim-nerdtree-tabs'
 " REPL
 Plug 'tpope/vim-fireplace'
 
-" Fuzzy autcomplete. 
-" Example: :FZF. :Tags tagyousearch. :Ag regex
-" brew install the_silver_search
-Plug 'junegunn/fzf', { 'dir': '~/.config/fzf', 'do': './install --all' }
-Plug 'junegunn/fzf.vim'
+" brew install ack
+Plug 'mileszs/ack.vim'
 
 " Complete
 Plug 'Shougo/deoplete.nvim', { 'do': function('DoRemote') }
@@ -80,8 +77,8 @@ set smartcase
 let g:deoplete#enable_at_startup = 1
 set completeopt-=preview
 let g:deoplete#sources#jedi#statement_length = 0 
-let g:python_host_prog = 'python2.7'
-let g:python3_host_prog = '/Users/albert_chen/.virtualenvs/|_____|/bin/python'
+let g:python_host_prog = 'python3'
+" let g:python3_host_prog = '/Users/albert_chen/.virtualenvs/|_____|/bin/python'
 
 " tmhedberg/SimpylFold
 let g:SimpylFold_docstring_preview = 1
