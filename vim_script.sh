@@ -1,4 +1,4 @@
-brew install ack
+brew install the_silver_search
 curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
 # reguire pip3

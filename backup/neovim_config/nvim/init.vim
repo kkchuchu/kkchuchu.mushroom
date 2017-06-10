@@ -20,8 +20,11 @@ Plug 'jistr/vim-nerdtree-tabs'
 " REPL
 Plug 'tpope/vim-fireplace'
 
-" brew install ack
-Plug 'mileszs/ack.vim'
+" Fuzzy autcomplete.
+" Example: :FZF. :Tags tagyousearch. :Ag regex
+" brew install the_silver_search
+Plug 'junegunn/fzf', { 'dir': '~/.config/nvim/fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
 
 " Complete
 Plug 'Shougo/deoplete.nvim', { 'do': function('DoRemote') }
