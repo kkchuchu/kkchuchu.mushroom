@@ -2,3 +2,5 @@
 __pycache__/*
 *.tmp
 .DS_Store
+backup/neovim_config/nvim/plugged/*
+.ipynb_checkpoints
