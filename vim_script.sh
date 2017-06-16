@@ -9,4 +9,4 @@ pip3 install jedi
 " :UpdateRemotePlugin in vim
 
 " let python autocomplete in shell
-export PYTHONSTARTUP="$(python -m jedi repl)"
+export PYTHONSTARTUP="$(python -m jedi.__main__ repl)"
