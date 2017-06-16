@@ -122,3 +122,4 @@ map <C-U> :redo<CR>
 command Wmyut execute "!rsync -ravz --exclude .git --no-o -e ssh ~/workspace/WFBSS_SERVER/ myut:~/WFBS_Hosted"
 " $(echo -ne '\r')
 
+imap <C-d> <C-[>diwie
