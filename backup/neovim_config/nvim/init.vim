@@ -23,6 +23,7 @@ Plug 'tpope/vim-fireplace'
 " Fuzzy autcomplete.
 " Example: :FZF. :Tags tagyousearch. :Ag regex
 " brew install the_silver_search
+" brew install fzf
 set rtp+=/usr/local/opt/fzf
 
 " Complete
