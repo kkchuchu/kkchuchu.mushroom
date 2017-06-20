@@ -7,22 +7,12 @@ endfunction
 " Git wrapper. Example: Git status.
 Plug 'tpope/vim-fugitive'
 
-" Auto generate tags: [required]ctags
-Plug 'szw/vim-tags'
-
-" Show tags
-Plug 'kkchuchu/tagbar', { 'branch': 'less_command'}
-
 " On-demand loading
 Plug 'scrooloose/nerdtree'
 Plug 'jistr/vim-nerdtree-tabs'
 
-" REPL
-Plug 'tpope/vim-fireplace'
-
 " Fuzzy autcomplete.
-" Example: :FZF. :Tags tagyousearch. :Ag regex
-" brew install the_silver_search
+" Example: :FZF.
 " brew install fzf
 set rtp+=/usr/local/opt/fzf
 
@@ -69,7 +59,8 @@ set background=dark
 " set colorcolumn=79
 
 " Enable folding
-" set foldmethod=indent
+set foldnestmax=2
+set foldmethod=indent
 " set foldlevel=99
 nnoremap <space> za
 
@@ -122,4 +113,4 @@ map <C-U> :redo<CR>
 command Wmyut execute "!rsync -ravz --exclude .git --no-o -e ssh ~/workspace/WFBSS_SERVER/ myut:~/WFBS_Hosted"
 " $(echo -ne '\r')
 
-imap <C-d> <C-[>diwie
+nmap <F7> :ToggleNERDTreeAndTagbar<CR>
