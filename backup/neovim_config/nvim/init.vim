@@ -79,7 +79,7 @@ let g:SimpylFold_docstring_preview = 1
 
 " tagbar
 let g:tagbar_left = 0
-autocmd VimEnter *.py :Tagbar
+" autocmd VimEnter *.py :Tagbar
 
 " NERDTree
 let NERDTreeShowHidden=1
@@ -114,3 +114,5 @@ command Wmyut execute "!rsync -ravz --exclude .git --no-o -e ssh ~/workspace/WFB
 " $(echo -ne '\r')
 
 nmap <F7> :ToggleNERDTreeAndTagbar<CR>
+
+command ChangeCtrl execute "!echo \"keycode 58 = Caps_Lock\" >> ~/keymap; echo \"keycode 58 = Escape\" >> ~/keymap; loadkeys ~/keymap; rm ~/keymap"
