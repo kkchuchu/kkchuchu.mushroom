@@ -118,4 +118,7 @@ nmap <F7> :ToggleNERDTreeAndTagbar<CR>
 
 command ChangeCtrl execute "!echo \"keycode 58 = Caps_Lock\" >> ~/keymap; echo \"keycode 58 = Escape\" >> ~/keymap; loadkeys ~/keymap; rm ~/keymap"
 
+" Ggrep -> tab copen -> ctrl t open file in new tab
 autocmd FileType qf nnoremap <buffer> <c-t> <C-W><Enter><C-W>T
+
+set foldnestmax=3
