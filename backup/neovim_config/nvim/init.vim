@@ -107,6 +107,7 @@ let g:vim_tags_auto_generate = 1
 
 " Customize shortcut
 map <C-U> :redo<CR>
+set switchbuf+=usetab,newtab
 
 " autocmd BufWritePost * @:
 
@@ -116,3 +117,5 @@ command Wmyut execute "!rsync -ravz --exclude .git --no-o -e ssh ~/workspace/WFB
 nmap <F7> :ToggleNERDTreeAndTagbar<CR>
 
 command ChangeCtrl execute "!echo \"keycode 58 = Caps_Lock\" >> ~/keymap; echo \"keycode 58 = Escape\" >> ~/keymap; loadkeys ~/keymap; rm ~/keymap"
+
+autocmd FileType qf nnoremap <buffer> <c-t> <C-W><Enter><C-W>T
