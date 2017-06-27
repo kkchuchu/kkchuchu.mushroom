@@ -59,9 +59,8 @@ set background=dark
 " set colorcolumn=79
 
 " Enable folding
-set foldnestmax=2
 set foldmethod=indent
-" set foldlevel=99
+set foldlevel=99
 nnoremap <space> za
 
 set ignorecase
@@ -74,12 +73,8 @@ let g:deoplete#sources#jedi#statement_length = 0
 let g:python_host_prog = 'python3'
 " let g:python3_host_prog = '/usr/bin/python3'
 
-" tmhedberg/SimpylFold
-let g:SimpylFold_docstring_preview = 1
-
 " tagbar
 let g:tagbar_left = 0
-" autocmd VimEnter *.py :Tagbar
 
 " NERDTree
 let NERDTreeShowHidden=1
@@ -114,11 +109,9 @@ set switchbuf+=usetab,newtab
 command Wmyut execute "!rsync -ravz --exclude .git --no-o -e ssh ~/workspace/WFBSS_SERVER/ myut:~/WFBS_Hosted"
 " $(echo -ne '\r')
 
-nmap <F7> :ToggleNERDTreeAndTagbar<CR>
-
+" map capslock to ctrl
 command ChangeCtrl execute "!echo \"keycode 58 = Caps_Lock\" >> ~/keymap; echo \"keycode 58 = Escape\" >> ~/keymap; loadkeys ~/keymap; rm ~/keymap"
 
 " Ggrep -> tab copen -> ctrl t open file in new tab
 autocmd FileType qf nnoremap <buffer> <c-t> <C-W><Enter><C-W>T
 
-set foldnestmax=3
