@@ -48,23 +48,22 @@ endif
 set tabstop=4
 set shiftwidth=4
 set expandtab
-
 set nu
 set hlsearch
 syntax enable
 set clipboard=unnamed
-autocmd! VimEnter * :GuiColorScheme wombat
-autocmd! VimEnter * :AirlineTheme molokai
 set background=dark
 " set colorcolumn=79
-
+set ignorecase
+set smartcase
 " Enable folding
 set foldmethod=indent
 set foldlevel=99
 nnoremap <space> za
+map <C-U> :redo<CR>
+autocmd! VimEnter * :GuiColorScheme wombat
+autocmd! VimEnter * :AirlineTheme molokai
 
-set ignorecase
-set smartcase 
 
 " python auto-complete
 let g:deoplete#enable_at_startup = 1
@@ -73,13 +72,12 @@ let g:deoplete#sources#jedi#statement_length = 0
 let g:python_host_prog = 'python3'
 " let g:python3_host_prog = '/usr/bin/python3'
 
-" tagbar
-let g:tagbar_left = 0
 
 " NERDTree
 let NERDTreeShowHidden=1
 let g:nerdtree_tabs_open_on_gui_startup = 1
 let g:nerdtree_tabs_open_on_console_startup = 1
+
 
 " airline
 let g:airline#extensions#tabline#enabled = 1
@@ -96,22 +94,14 @@ let g:airline_section_y = 0
 let g:airline_section_warning = 0
 let g:airline_theme = 'molokai'
 
-" autocmd VimEnter * :hi Directory guifg=#FF0000 ctermfg=red
-
-let g:vim_tags_auto_generate = 1
-
-" Customize shortcut
-map <C-U> :redo<CR>
-set switchbuf+=usetab,newtab
-
 " autocmd BufWritePost * @:
 
 command Wmyut execute "!rsync -ravz --exclude .git --no-o -e ssh ~/workspace/WFBSS_SERVER/ myut:~/WFBS_Hosted"
-" $(echo -ne '\r')
 
 " map capslock to ctrl
-command ChangeCtrl execute "!echo \"keycode 58 = Caps_Lock\" >> ~/keymap; echo \"keycode 58 = Escape\" >> ~/keymap; loadkeys ~/keymap; rm ~/keymap"
+command Ctrl2Capslock execute "!echo \"keycode 58 = Caps_Lock\" >> ~/keymap; echo \"keycode 58 = Escape\" >> ~/keymap; loadkeys ~/keymap; rm ~/keymap"
 
 " Ggrep -> tab copen -> ctrl t open file in new tab
 autocmd FileType qf nnoremap <buffer> <c-t> <C-W><Enter><C-W>T
+autocmd QuickFixCmdPost *grep* tab copen
 
