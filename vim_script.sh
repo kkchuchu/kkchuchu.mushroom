@@ -13,3 +13,10 @@ pip3 install neovim, jedi
 
 " let python autocomplete in shell
 export PYTHONSTARTUP="$(python -m jedi.__main__ repl)"
+
+
+" Reference
+" vim-plug
+" https://github.com/junegunn/vim-plug
+" fzf
+" https://github.com/junegunn/fzf
