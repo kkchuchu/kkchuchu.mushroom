@@ -1,10 +1,12 @@
 brew install fzf
+git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+~/.fzf/install
 brew install --HEAD universal-ctags
+# neovim plug in manager
 curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
 # reguire pip3
-pip3 install neovim
-pip3 install jedi
+pip3 install neovim, jedi
 
 " update python interpreter for vim
 " :UpdateRemotePlugin in vim
