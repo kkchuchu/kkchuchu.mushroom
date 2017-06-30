@@ -14,7 +14,7 @@ Plug 'jistr/vim-nerdtree-tabs'
 " Fuzzy autcomplete.
 " Example: :FZF.
 " brew install fzf
-set rtp+=/usr/local/opt/fzf
+set rtp+=~/.fzf
 
 " Complete
 Plug 'Shougo/deoplete.nvim', { 'do': function('DoRemote') }
