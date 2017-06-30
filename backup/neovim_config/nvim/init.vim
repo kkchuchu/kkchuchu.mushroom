@@ -96,8 +96,6 @@ let g:airline_theme = 'molokai'
 
 " autocmd BufWritePost * @:
 
-command Wmyut execute "!rsync -ravz --exclude .git --no-o -e ssh ~/workspace/WFBSS_SERVER/ myut:~/WFBS_Hosted"
-
 " map capslock to ctrl
 command Ctrl2Capslock execute "!echo \"keycode 58 = Caps_Lock\" >> ~/keymap; echo \"keycode 58 = Escape\" >> ~/keymap; loadkeys ~/keymap; rm ~/keymap"
 " sample
