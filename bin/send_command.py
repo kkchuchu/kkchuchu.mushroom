@@ -1,0 +1,24 @@
+#!/usr/bin/env python
+"""
+Send command to a Screen and execute it
+From command:
+    screen -S ut -X stuff 'command'`echo -ne '\015'`
+Example:
+    python send_command.py ut echo hello
+"""
+
+print __doc__
+
+
+import sys
+from subprocess import call
+
+
+if __name__ == '__main__':
+    session_name = sys.argv[1]
+    command = sys.argv[2:]
+
+    full_command = ['screen', '-S', session_name, '-X', 'stuff'] + command + ["\r"]
+    print 'execute commnad: ', full_command
+    call(full_command)
+

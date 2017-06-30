@@ -1,7 +1,4 @@
 #!/usr/bin/env python
-
-import sh
-
 """
 This command can show much better log, and try to write git commit as a story.
 
@@ -10,5 +7,16 @@ This command can show much better log, and try to write git commit as a story.
 - [Your Git Log Should Tell A Story](http://www.mokacoding.com/blog/your-git-log-should-tell-a-story/?utm_campaign=CodeTengu&utm_medium=web&utm_source=CodeTengu_75)
 
 """
+print __doc__
 
-print(sh.git.log("--format=oneline", "--abbrev-commit"))
+
+import sys
+from subprocess import call
+
+
+if __name__ == '__main__':
+    commit_hash = sys.argv[1]
+    full_command = ['git', 'diff', commit_hash+"^", commit_hash]
+    print 'execute commnad: ', full_command
+    call(full_command)
+
