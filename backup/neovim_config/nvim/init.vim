@@ -100,6 +100,7 @@ command Wmyut execute "!rsync -ravz --exclude .git --no-o -e ssh ~/workspace/WFB
 
 " map capslock to ctrl
 command Ctrl2Capslock execute "!echo \"keycode 58 = Caps_Lock\" >> ~/keymap; echo \"keycode 58 = Escape\" >> ~/keymap; loadkeys ~/keymap; rm ~/keymap"
+command! -nargs=1 Send echo <q-args>
 
 " Ggrep -> tab copen -> ctrl t open file in new tab
 autocmd FileType qf nnoremap <buffer> <c-t> <C-W><Enter><C-W>T
