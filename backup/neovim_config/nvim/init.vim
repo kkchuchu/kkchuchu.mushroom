@@ -104,4 +104,4 @@ command -nargs=1 Echo echo <q-args>
 " Ggrep -> tab copen -> ctrl t open file in new tab
 autocmd FileType qf nnoremap <buffer> <c-t> <C-W><Enter><C-W>T
 autocmd QuickFixCmdPost *grep* tab copen
-
+command -nargs=+ Send :!send_command "<q-args>"
