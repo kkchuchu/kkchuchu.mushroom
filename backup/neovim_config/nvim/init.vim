@@ -35,6 +35,7 @@ Plug 'thinca/vim-guicolorscheme'
 " http://vimcasts.org/episodes/aligning-text-with-tabular-vim/. 
 " Example: :Tab /=
 Plug 'godlygeek/tabular'
+Plug 'terryma/vim-multiple-cursors'
 
 " Add plugins to &runtimepath
 call plug#end()
