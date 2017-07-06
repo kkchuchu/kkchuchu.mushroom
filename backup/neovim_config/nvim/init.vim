@@ -4,7 +4,7 @@ function! DoRemote(arg)
   UpdateRemotePlugins
 endfunction
 
-" Git wrapper. Example: Git status.
+" Git wrapper. Example: Gstatus.
 Plug 'tpope/vim-fugitive'
 
 " On-demand loading
@@ -13,7 +13,6 @@ Plug 'jistr/vim-nerdtree-tabs'
 
 " Fuzzy autcomplete.
 " Example: :FZF.
-" brew install fzf
 set rtp+=~/.fzf
 
 " Complete
@@ -34,6 +33,7 @@ Plug 'thinca/vim-guicolorscheme'
 
 " http://vimcasts.org/episodes/aligning-text-with-tabular-vim/. 
 " Example: :Tab /=
+" :Tab/:\zs 
 Plug 'godlygeek/tabular'
 Plug 'terryma/vim-multiple-cursors'
 
@@ -104,5 +104,7 @@ command -nargs=1 Echo echo <q-args>
 
 " Ggrep -> tab copen -> ctrl t open file in new tab
 autocmd FileType qf nnoremap <buffer> <c-t> <C-W><Enter><C-W>T
-autocmd QuickFixCmdPost *grep* tab copen
+autocmd QuickFixCmdPost *grep* cwindow
 command -nargs=+ Send :!send_command "<q-args>"
+command Go :FZF
+
