@@ -112,3 +112,4 @@ command -nargs=+ Send :!send_command "<q-args>"
 command Gg :FZF
 set switchbuf=usetab
 
+command Whereis :echo @%
