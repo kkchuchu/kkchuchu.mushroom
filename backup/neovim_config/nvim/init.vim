@@ -37,6 +37,7 @@ Plug 'thinca/vim-guicolorscheme'
 Plug 'godlygeek/tabular'
 Plug 'terryma/vim-multiple-cursors'
 
+" :Autoformat
 Plug 'Chiel92/vim-autoformat'
 
 " Add plugins to &runtimepath
