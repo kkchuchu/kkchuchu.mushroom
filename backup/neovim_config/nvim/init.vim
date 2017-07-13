@@ -40,6 +40,8 @@ Plug 'terryma/vim-multiple-cursors'
 " :Autoformat
 Plug 'Chiel92/vim-autoformat'
 
+Plug 'kien/ctrlp.vim'
+
 " Add plugins to &runtimepath
 call plug#end()
 
