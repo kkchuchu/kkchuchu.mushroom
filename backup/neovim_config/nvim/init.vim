@@ -11,10 +11,6 @@ Plug 'tpope/vim-fugitive'
 Plug 'scrooloose/nerdtree'
 Plug 'jistr/vim-nerdtree-tabs'
 
-" Fuzzy autcomplete.
-" Example: :FZF.
-set rtp+=~/.fzf
-
 " Complete
 Plug 'Shougo/deoplete.nvim', { 'do': function('DoRemote') }
 
