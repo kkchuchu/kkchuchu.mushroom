@@ -111,7 +111,7 @@ command -nargs=1 Echo echo <q-args>
 autocmd FileType qf nnoremap <buffer> <c-t> <C-W><Enter><C-W>T
 autocmd QuickFixCmdPost *grep* tab cwindow
 command -nargs=+ Send :!send_command "<q-args>"
-command Gg :FZF
 set switchbuf=usetab
 
 command Whereis :echo @%
+command -nargs=+ Ggreppy :Ggrep -I "<q-args>" -- '*.py'
