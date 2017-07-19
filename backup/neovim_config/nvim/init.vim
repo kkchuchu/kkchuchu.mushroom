@@ -111,3 +111,6 @@ set switchbuf=usetab
 
 command Whereis :echo @%
 command -nargs=+ Ggreppy :Ggrep -I "<q-args>" -- '*.py'
+
+let g:ctrlp_map = '<c-p>'
+let g:ctrlp_cmd = 'CtrlP'
