@@ -63,7 +63,7 @@ set foldmethod=indent
 set foldlevel=99
 nnoremap <space> za
 map <C-U> :redo<CR>
-autocmd! VimEnter * :GuiColorScheme wombat
+autocmd! VimEnter * :GuiColorScheme monokai
 autocmd! VimEnter * :AirlineTheme molokai
 
 
@@ -76,9 +76,9 @@ let g:python_host_prog = 'python3'
 
 
 " NERDTree
-let NERDTreeShowHidden=1
-let g:nerdtree_tabs_open_on_gui_startup = 1
-let g:nerdtree_tabs_open_on_console_startup = 1
+" let NERDTreeShowHidden=1
+" let g:nerdtree_tabs_open_on_gui_startup = 1
+" let g:nerdtree_tabs_open_on_console_startup = 1
 
 
 " airline
