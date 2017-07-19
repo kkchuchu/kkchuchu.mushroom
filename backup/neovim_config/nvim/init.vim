@@ -63,8 +63,6 @@ set foldmethod=indent
 set foldlevel=99
 nnoremap <space> za
 map <C-U> :redo<CR>
-autocmd! VimEnter * :GuiColorScheme monokai
-autocmd! VimEnter * :AirlineTheme molokai
 
 
 " python auto-complete
@@ -94,9 +92,8 @@ let g:airline#extensions#tabline#buffer_nr_show = 1
 let g:airline_section_c = 0
 let g:airline_section_y = 0
 let g:airline_section_warning = 0
-let g:airline_theme = 'molokai'
+let g:airline_theme = 'monochrome'
 
-" autocmd BufWritePost * @:
 
 " map capslock to ctrl
 command Ctrl2Capslock execute "!echo \"keycode 58 = Caps_Lock\" >> ~/keymap; echo \"keycode 58 = Escape\" >> ~/keymap; loadkeys ~/keymap; rm ~/keymap"
@@ -106,6 +103,7 @@ command -nargs=1 Echo echo <q-args>
 " Ggrep -> tab copen -> ctrl t open file in new tab
 autocmd FileType qf nnoremap <buffer> <c-t> <C-W><Enter><C-W>T
 autocmd QuickFixCmdPost *grep* tab cwindow
+":Send args
 command -nargs=+ Send :!send_command "<q-args>"
 set switchbuf=usetab
 
@@ -114,3 +112,4 @@ command -nargs=+ Ggreppy :Ggrep -I "<q-args>" -- '*.py'
 
 let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlP'
+autocmd! VimEnter * :GuiColorScheme monokai
