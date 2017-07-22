@@ -38,14 +38,18 @@ Plug 'Chiel92/vim-autoformat'
 
 Plug 'kien/ctrlp.vim'
 
+Plug 'hzchirs/vim-material'
+
 " Add plugins to &runtimepath
 call plug#end()
 
 filetype plugin on
 
-if $COLORTERM == 'gnome-terminal'
-  set t_Co=256
-endif
+" if $COLORTERM == 'gnome-terminal'
+"   set t_Co=256
+" endif
+
+set termguicolors
 
 set tabstop=4
 set shiftwidth=4
