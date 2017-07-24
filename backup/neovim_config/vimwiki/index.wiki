@@ -1,0 +1,17 @@
+=== Vim Usage ===
+    * <Leader> - \
+    * :dw - delete a word
+    * :edit - refresh file
+    * zM zR - fold all
+    * zm zr - fold level by level
+
+=== Multiple Cursors ===
+
+Out of the box, all you need to know is a single key Ctrl-n. Pressing the key in Normal mode highlights the current word under the cursor in Visual mode and places a virtual cursor at the end of it. Pressing it again finds the next occurrence and places another virtual cursor at the end of the visual selection.
+If you select multiple lines in Visual mode, pressing the key puts a virtual cursor at every line and leaves you in Normal mode.
+
+After you've marked all your locations with Ctrl-n, you can change the visual selection with normal Vim motion commands in Visual mode. You could go to Normal mode by pressing v and wield your motion commands there. Single key command to switch to Insert mode such as c or s from Visual mode or i, a, I, A in Normal mode should work without any issues.
+
+=== Trouble Shooting ===
+    * Is not an "editor command”
+        - meaning it's not an Ex command. That is, you wouldn't type :zz. "Command" is an overloaded term in Vim.

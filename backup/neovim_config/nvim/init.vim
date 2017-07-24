@@ -40,6 +40,8 @@ Plug 'kien/ctrlp.vim'
 
 Plug 'hzchirs/vim-material'
 
+Plug 'vimwiki/vimwiki'
+
 " Add plugins to &runtimepath
 call plug#end()
 
