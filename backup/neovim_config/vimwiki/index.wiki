@@ -1,4 +1,4 @@
-=== Vim Usage ===
+== Vim Usage ==
     * <Leader> - \
     * :dw - delete a word
     * :edit - refresh file
@@ -15,3 +15,26 @@ After you've marked all your locations with Ctrl-n, you can change the visual se
 === Trouble Shooting ===
     * Is not an "editor command”
         - meaning it's not an Ex command. That is, you wouldn't type :zz. "Command" is an overloaded term in Vim.
+
+
+== Linux Command ==
+cat ~/.ssh/id_rsa.pub | ssh user@123.45.56.78 "mkdir -p ~/.ssh && cat >>  ~/.ssh/authorized_keys"
+
+
+== iTerm Command ==
+    * <Esc> d - kill word before
+    * <Esc> f, b - move back and fore
+    * <Option> mouse left click - copy
+    * <Cmd><Option> - copy block
+
+
+== Python Style ==
+
+with open('/path/to/some/file/you/want/to/read') as file_1, \
+     open('/path/to/some/file/being/written', 'w') as file_2:
+    file_2.write(file_1.read())
+    
+answer = ('Ten for that? You must be mad!'
+          if does_not_haggle(brian)
+          else "It's worth ten if it's worth a shekel.")
+          
