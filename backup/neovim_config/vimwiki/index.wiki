@@ -29,6 +29,7 @@ After you've marked all your locations with Ctrl-n, you can change the visual se
     * curl -v -H 'Host:157.166.226.25' -H 'Accept-Language: es' -X POST www.google.com
     * [understand linux cpu state](http://blog.scoutapp.com/articles/2015/02/24/understanding-linuxs-cpu-stats)
     * tcpdump
+    * yes | cp -r /source /dest # without permission
 
 
 == iTerm Command ==
