@@ -12,7 +12,7 @@ If you select multiple lines in Visual mode, pressing the key puts a virtual cur
 
 After you've marked all your locations with Ctrl-n, you can change the visual selection with normal Vim motion commands in Visual mode. You could go to Normal mode by pressing v and wield your motion commands there. Single key command to switch to Insert mode such as c or s from Visual mode or i, a, I, A in Normal mode should work without any issues.
 
-=== Trouble Shooting ===
+=== Troubleshooting ===
     * Is not an "editor command”
         - meaning it's not an Ex command. That is, you wouldn't type :zz. "Command" is an overloaded term in Vim.
 
@@ -30,6 +30,8 @@ After you've marked all your locations with Ctrl-n, you can change the visual se
     * [understand linux cpu state](http://blog.scoutapp.com/articles/2015/02/24/understanding-linuxs-cpu-stats)
     * tcpdump
     * yes | cp -r /source /dest # without permission
+    * grep -rnw '/path/to/somewhere/' -e 'pattern'
+        - --exclude, --include 
 
 
 == iTerm Command ==
