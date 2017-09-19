@@ -1,6 +1,10 @@
 # neovim plug in manager
 curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
+mkdir ~/.config
+ln -s ~/workspace/kkchuchu.mushroom/backup/neovim_config/vimwiki ~/vimwiki
+ln -s ~/workspace/kkchuchu.mushroom/backup/neovim_config/nvim ~/.config
+
 # reguire pip3
 pip3 install neovim, jedi
 

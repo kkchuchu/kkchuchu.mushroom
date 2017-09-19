@@ -69,6 +69,7 @@ set foldmethod=indent
 set foldlevel=99
 nnoremap <space> za
 map <C-U> :redo<CR>
+colorscheme monokai
 
 
 " python auto-complete
@@ -98,7 +99,7 @@ let g:airline#extensions#tabline#buffer_nr_show = 1
 let g:airline_section_c = 0
 let g:airline_section_y = 0
 let g:airline_section_warning = 0
-let g:airline_theme = 'monochrome'
+let g:airline_theme = 'alduin'
 
 
 " map capslock to ctrl
@@ -118,4 +119,3 @@ command -nargs=+ Ggreppy :Ggrep -I "<q-args>" -- '*.py'
 
 let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlP'
-autocmd! VimEnter * :GuiColorScheme monokai
