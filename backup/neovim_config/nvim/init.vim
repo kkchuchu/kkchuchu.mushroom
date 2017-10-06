@@ -44,6 +44,8 @@ Plug 'vimwiki/vimwiki'
 
 Plug 'tell-k/vim-autopep8'
 
+Plug 'davidhalter/jedi-vim'
+
 " Add plugins to &runtimepath
 call plug#end()
 
@@ -83,10 +85,9 @@ let g:deoplete#sources#jedi#statement_length = 0
 
 
 " NERDTree
-" let NERDTreeShowHidden=1
+let NERDTreeShowHidden=1
 " let g:nerdtree_tabs_open_on_gui_startup = 1
 " let g:nerdtree_tabs_open_on_console_startup = 1
-
 
 " airline
 let g:airline#extensions#tabline#enabled = 1

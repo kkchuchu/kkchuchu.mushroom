@@ -16,6 +16,15 @@ After you've marked all your locations with Ctrl-n, you can change the visual se
     * Is not an "editor command”
         - meaning it's not an Ex command. That is, you wouldn't type :zz. "Command" is an overloaded term in Vim.
 
+=== davidhalter/jedi-vim ===
+    * Completion <C-Space>
+    * Goto assignments <leader>g (typical goto function)
+    * Goto definitions <leader>d (follow identifier as far as possible, includes imports and statements)
+    * Show Documentation/Pydoc K (shows a popup with assignments)
+    * Renaming <leader>r
+    * Usages <leader>n (shows all the usages of a name)
+    * Open module, e.g. :Pyimport os (opens the os module) =
+
 
 == Linux Command ==
     * cat ~/.ssh/id_rsa.pub | ssh user@123.45.56.78 "mkdir -p ~/.ssh && cat >>  ~/.ssh/authorized_keys"
