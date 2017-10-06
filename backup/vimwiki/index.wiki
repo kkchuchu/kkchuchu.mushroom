@@ -27,6 +27,9 @@ After you've marked all your locations with Ctrl-n, you can change the visual se
     * Usages <leader>n (shows all the usages of a name)
     * Open module, e.g. :Pyimport os (opens the os module) =
 
+=== FileSystem ===
+    * :NERDTREE
+    * press m
 
 == Linux Command ==
     * cat ~/.ssh/id_rsa.pub | ssh user@123.45.56.78 "mkdir -p ~/.ssh && cat >>  ~/.ssh/authorized_keys"
