@@ -6,6 +6,8 @@
     * zm zr - fold level by level
     * :Tab /=
     * :Tab/:\zs
+    * echo @% 	def/my.txt
+    * echo expand('%:p') 	/abc/def/my.txt
 
 === Multiple Cursors ===
 
