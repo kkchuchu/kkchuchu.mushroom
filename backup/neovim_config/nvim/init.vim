@@ -78,7 +78,6 @@ colorscheme monokai
 
 " python auto-complete
 let g:deoplete#enable_at_startup = 1
-set completeopt-=preview
 let g:deoplete#sources#jedi#statement_length = 0 
 let g:python_host_prog = 'python'
 " let g:python3_host_prog = '/usr/bin/python3'
