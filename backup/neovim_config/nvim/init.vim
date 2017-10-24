@@ -44,8 +44,6 @@ Plug 'vimwiki/vimwiki'
 
 Plug 'tell-k/vim-autopep8'
 
-Plug 'davidhalter/jedi-vim'
-
 " Add plugins to &runtimepath
 call plug#end()
 
@@ -78,7 +76,7 @@ colorscheme monokai
 
 " python auto-complete
 let g:deoplete#enable_at_startup = 1
-set completeopt-=preview
+" set completeopt-=preview
 let g:deoplete#sources#jedi#statement_length = 0 
 let g:python_host_prog = 'python'
 " let g:python3_host_prog = '/usr/bin/python3'

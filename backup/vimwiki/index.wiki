@@ -29,7 +29,7 @@ After you've marked all your locations with Ctrl-n, you can change the visual se
 
 === FileSystem ===
     * :NERDTREE
-    * press m
+    * press m to create file or folder
 
 == Linux Command ==
     * cat ~/.ssh/id_rsa.pub | ssh user@123.45.56.78 "mkdir -p ~/.ssh && cat >>  ~/.ssh/authorized_keys"
