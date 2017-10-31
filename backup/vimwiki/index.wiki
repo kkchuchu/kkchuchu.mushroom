@@ -54,6 +54,13 @@ After you've marked all your locations with Ctrl-n, you can change the visual se
     * yes | cp -r /source /dest # without permission
     * grep -rnw '/path/to/somewhere/' -e 'pattern'
         - --exclude, --include 
+    * Single port:
+        nc -zv 127.0.0.1 80
+    * [iptable](http://www.putorius.net/2011/05/basic-of-iptables-opening-ports-on.html)
+	* Enable 80 port
+		iptables -I INPUT -p tcp --dport 80 -j ACCEPT
+
+        
 
 
 == iTerm Command ==
