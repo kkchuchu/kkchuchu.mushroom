@@ -1,3 +1,6 @@
+== [[Linux Command]] ==
+== [[Python]] ==
+
 == Vim Usage ==
     * <Leader> - \
     * :dw - delete a word
@@ -8,6 +11,7 @@
     * :Tab/:\zs
     * echo @% 	def/my.txt
     * echo expand('%:p') 	/abc/def/my.txt
+    * \wt - open wiki in new tab
 
 === Grep ===
     * find * -name '*.proto' -exec grep -HE 'Def.ScanSpeed[ ]*sc' {} \;
@@ -23,7 +27,7 @@ If you select multiple lines in Visual mode, pressing the key puts a virtual cur
 
 After you've marked all your locations with Ctrl-n, you can change the visual selection with normal Vim motion commands in Visual mode. You could go to Normal mode by pressing v and wield your motion commands there. Single key command to switch to Insert mode such as c or s from Visual mode or i, a, I, A in Normal mode should work without any issues.
 
-=== Troubleshooting ===
+=== Vim Troubleshooting ===
     * Is not an "editor command”
         - meaning it's not an Ex command. That is, you wouldn't type :zz. "Command" is an overloaded term in Vim.
 
@@ -43,79 +47,9 @@ After you've marked all your locations with Ctrl-n, you can change the visual se
 == iTerm ==
     * cmd+Alt: switch between windows.
     * ctrl+w: delete last word.
-
-
-== Linux Command ==
-    * cat ~/.ssh/id_rsa.pub | ssh user@123.45.56.78 "mkdir -p ~/.ssh && cat >>  ~/.ssh/authorized_keys"
-    * echo "drop database if exists ut_lookup" | mysql
-    * rpm --noscripts -e $(rpm -qa wfbsh*)
-    * rpm -e --nodeps httpd
-    * nslookup www.google.com.tw
-        - NXDomain == Non-Existent domain
-    * find . -name "*.png" -o -name "*.jpg" -o -name "*.gif" -type f
-    * curl -v -H {header} -X POST {url}
-    * curl -v -H 'Host:157.166.226.25' -H 'Accept-Language: es' -X POST www.google.com
-    * [understand linux cpu state]
-      (http://blog.scoutapp.com/articles/2015/02/24/understanding-linuxs-cpu-stats)
-    * tcpdump
-    * yes | cp -r /source /dest # without permission
-    * grep -rnw '/path/to/somewhere/' -e 'pattern'
-        - --exclude, --include 
-    * Single port:
-        nc -zv 127.0.0.1 80
-    * [iptable](http://www.putorius.net/2011/05/basic-of-iptables-opening-ports-on.html)
-	* Enable 80 port
-		iptables -I INPUT -p tcp --dport 80 -j ACCEPT
-
-        
-
-
-== iTerm Command ==
     * <Esc> d - kill word before
     * <Esc> f, b - move back and fore
     * <Option> mouse left click - copy
     * <Cmd><Option> - copy block
     * command + ] - Next Pane
 
-
-== Python Style ==
-
-with open('/path/to/some/file/you/want/to/read') as file_1, \
-     open('/path/to/some/file/being/written', 'w') as file_2:
-    file_2.write(file_1.read())
-    
-answer = ('Ten for that? You must be mad!'
-          if does_not_haggle(brian)
-          else "It's worth ten if it's worth a shekel.")
-          
-'{} {}'.format('one', 'two')
-data = {'first': 'Hodor', 'last': 'Hodor!'}
-'{first} {last}'.format(**data)
-
-The %s specifier converts the object using str(), and %r converts it using repr().
-import datetime
-
-d = datetime.date.today()
-str(d)
-'2011-05-14'
-repr(d)
-'datetime.date(2011, 5, 14)'
-
-=== mock ===
-a.py
-    -> Defines SomeClass
-
-b.py
-    -> from a import SomeClass
-    -> some_function instantiates SomeClass
-    
-Now we want to test some_function but we want to mock out SomeClass using patch(). 
-The problem is that when we import module b, which we will have to do then it imports SomeClass from module a. 
-If we use patch() to mock out a.SomeClass then it will have no effect on our test; module b already has a reference to the real SomeClass and it looks like our patching had no effect.
-
-The key is to patch out SomeClass where it is used (or where it is looked up ). 
-In this case some_function will actually look up SomeClass in module b, where we have imported it. The patching should look like:
-@patch('b.SomeClass')
-
-=== json indent ===
-print json.dumps(parsed, indent=4, sort_keys=True)
