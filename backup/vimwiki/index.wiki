@@ -8,7 +8,13 @@
     * :Tab/:\zs
     * echo @% 	def/my.txt
     * echo expand('%:p') 	/abc/def/my.txt
+
+=== Grep ===
+    * find * -name '*.proto' -exec grep -HE 'Def.ScanSpeed[ ]*sc' {} \;
+
+=== Replace ===
     * :%s/foo/bar/g
+    * :7,9 s/foo/bar/c
 
 === Multiple Cursors ===
 
@@ -36,6 +42,7 @@ After you've marked all your locations with Ctrl-n, you can change the visual se
 
 == iTerm ==
     * cmd+Alt: switch between windows.
+    * ctrl+w: delete last word.
 
 
 == Linux Command ==
@@ -109,3 +116,6 @@ If we use patch() to mock out a.SomeClass then it will have no effect on our tes
 The key is to patch out SomeClass where it is used (or where it is looked up ). 
 In this case some_function will actually look up SomeClass in module b, where we have imported it. The patching should look like:
 @patch('b.SomeClass')
+
+=== json indent ===
+print json.dumps(parsed, indent=4, sort_keys=True)
