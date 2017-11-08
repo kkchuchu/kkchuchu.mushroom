@@ -13,6 +13,7 @@ Plug 'jistr/vim-nerdtree-tabs'
 
 " Complete
 Plug 'Shougo/deoplete.nvim', { 'do': function('DoRemote') }
+Plug 'davidhalter/jedi-vim'
 
 " python indent
 Plug 'hynek/vim-python-pep8-indent'
@@ -33,7 +34,7 @@ Plug 'terryma/vim-multiple-cursors'
 " :Autoformat
 Plug 'Chiel92/vim-autoformat'
 
-Plug 'kien/ctrlp.vim'
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 
 Plug 'hzchirs/vim-material'
 
@@ -73,7 +74,7 @@ colorscheme monokai
 
 " python auto-complete
 let g:deoplete#enable_at_startup = 1
-" set completeopt-=preview
+set completeopt+=preview
 
 let g:deoplete#sources#jedi#statement_length = 0 
 let g:python_host_prog = 'python'
@@ -118,6 +119,7 @@ command -nargs=+ Send :!send_command "<q-args>"
 set switchbuf=usetab
 
 command Whereis :echo @%
+:map <c-f> <s-k>
 command -nargs=+ Ggreppy :Ggrep -I "<q-args>" -- '*.py'
 
 let g:ctrlp_map = '<c-p>'
