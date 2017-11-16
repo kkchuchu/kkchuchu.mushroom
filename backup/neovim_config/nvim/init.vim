@@ -84,8 +84,7 @@ let g:python_host_prog = 'python'
 " let g:python3_host_prog = '/usr/bin/python3'
 
 " jedi-python
-let g:jedi#completions_enabled = 0
-let g:jedi#auto_close_doc = 1
+let g:jedi#completions_enabled = 1
 
 
 " NERDTree
