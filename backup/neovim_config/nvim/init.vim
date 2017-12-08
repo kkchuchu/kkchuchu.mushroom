@@ -81,7 +81,7 @@ set completeopt+=preview
 
 let g:deoplete#sources#jedi#statement_length = 0 
 let g:python_host_prog = 'python'
-" let g:python3_host_prog = '/usr/bin/python3'
+let g:python3_host_prog = '/usr/local/opt/python3/bin/python3.6'
 
 " jedi-python
 let g:jedi#completions_enabled = 1
