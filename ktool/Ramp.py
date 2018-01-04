@@ -1,3 +1,5 @@
+import sys
+
 import pandas
 import numpy
 
@@ -9,9 +11,6 @@ class Ramp(object):
 
     def stream(self, batchsize=1):
         # Use pandas read csv method, may cause slow performance?
-        return pandas.read_csv(self.__file_path, iterator=True, chunksize=batchsize)
-
-    def batch(self, batchsize):
         return pandas.read_csv(self.__file_path, iterator=True, chunksize=batchsize)
 
     def sample(self, nrows = 10):
