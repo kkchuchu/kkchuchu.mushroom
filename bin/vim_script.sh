@@ -8,6 +8,8 @@ ln -s ~/workspace/kkchuchu.mushroom/backup/neovim_config/nvim ~/.config
 # reguire pip3
 pip3 install neovim, jedi
 
+# install plugins
+# :PluginInstall
 # update python interpreter for vim
 # :UpdateRemotePlugin in vim
 
