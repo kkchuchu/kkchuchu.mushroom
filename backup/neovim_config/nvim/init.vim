@@ -29,7 +29,6 @@ Plug 'thinca/vim-guicolorscheme'
 " Example: :Tab /=
 " :Tab/:\zs 
 Plug 'godlygeek/tabular'
-Plug 'terryma/vim-multiple-cursors'
 
 " :Autoformat
 Plug 'Chiel92/vim-autoformat'
