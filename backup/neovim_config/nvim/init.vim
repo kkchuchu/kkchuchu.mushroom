@@ -121,6 +121,7 @@ set switchbuf=usetab
 
 command Whereis :echo @%
 :map <c-f> <s-k>
+:setlocal display=uhex
 command -nargs=+ Ggreppy :Ggrep -I "<q-args>" -- '*.py'
 
 let g:ctrlp_map = '<c-p>'
