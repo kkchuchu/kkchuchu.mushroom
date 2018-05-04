@@ -5,8 +5,13 @@ mkdir ~/.config
 ln -s ~/workspace/kkchuchu.mushroom/backup/neovim_config/vimwiki ~/vimwiki
 ln -s ~/workspace/kkchuchu.mushroom/backup/neovim_config/nvim ~/.config
 
+
+pip install virtualenv
+
+virtualenv -p python3 --no-site-packages ~/.virtualenvs/mushroom/
+. ~/.virtualenvs/mushroom/bin/activate
 # reguire pip3
-pip3 install neovim, jedi
+pip3 install neovim jedi
 
 # install plugins
 # :PluginInstall

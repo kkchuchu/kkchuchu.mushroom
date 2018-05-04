@@ -79,7 +79,7 @@ let g:deoplete#enable_at_startup = 1
 set completeopt+=preview
 
 let g:deoplete#sources#jedi#statement_length = 0 
-let g:python_host_prog = '~/.virtualenvs/mushroom/bin/python2.7'
+let g:python3_host_prog = '/Users/albert_chen/.virtualenvs/mushroom/bin/python3'
 
 " jedi-python
 let g:jedi#completions_enabled = 1
