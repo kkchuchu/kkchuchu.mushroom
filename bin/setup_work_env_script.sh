@@ -4,6 +4,7 @@ curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs https://raw.g
 mkdir ~/.config
 ln -s ~/workspace/kkchuchu.mushroom/backup/neovim_config/vimwiki ~/vimwiki
 ln -s ~/workspace/kkchuchu.mushroom/backup/neovim_config/nvim ~/.config
+ln -s ~/workspace/kkchuchu.mushroom/backup/.gitconfig ~/.gitconfig
 
 
 pip install virtualenv
