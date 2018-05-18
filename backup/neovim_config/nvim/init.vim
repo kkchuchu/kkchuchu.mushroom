@@ -69,6 +69,7 @@ set smartcase
 " Enable folding
 set foldmethod=indent
 set foldlevel=99
+set list
 nnoremap <space> za
 map <C-U> :redo<CR>
 colorscheme monokai
