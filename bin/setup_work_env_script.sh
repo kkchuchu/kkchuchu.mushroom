@@ -29,3 +29,5 @@ export PYTHONSTARTUP="$(python -m jedi.__main__ repl)"
 # fzf
 # https://github.com/junegunn/fzf
 
+
+cp ./backup/.basrc.backup ~/.bashrc

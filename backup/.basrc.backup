@@ -6,3 +6,5 @@ source "${GITAWAREPROMPT}/main.sh"
 export PS1="\u@\h \W \[$txtcyn\]\$git_branch\[$txtred\]\$git_dirty\[$txtrst\]\$ "
 
 imgcat ${MUSHROOMBASE}/backup/cl.png
+
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
