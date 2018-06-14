@@ -5,6 +5,7 @@ mkdir ~/.config
 ln -s ~/workspace/kkchuchu.mushroom/backup/neovim_config/vimwiki ~/vimwiki
 ln -s ~/workspace/kkchuchu.mushroom/backup/neovim_config/nvim ~/.config
 ln -s ~/workspace/kkchuchu.mushroom/backup/.gitconfig ~/.gitconfig
+ln -s ~../backup/.bashrc.backup ~/.bashrc
 
 
 pip install virtualenv
@@ -30,4 +31,3 @@ export PYTHONSTARTUP="$(python -m jedi.__main__ repl)"
 # https://github.com/junegunn/fzf
 
 
-cp ./backup/.basrc.backup ~/.bashrc
