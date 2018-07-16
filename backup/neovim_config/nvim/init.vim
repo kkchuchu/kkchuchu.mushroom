@@ -80,6 +80,7 @@ let g:deoplete#enable_at_startup = 1
 set completeopt+=preview
 
 let g:deoplete#sources#jedi#statement_length = 0 
+let g:jedi#force_py_version = '3'
 let g:python3_host_prog = '/Users/albert_chen/.virtualenvs/mushroom/bin/python3'
 
 " jedi-python
