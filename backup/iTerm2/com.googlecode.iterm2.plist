@@ -71,13 +71,13 @@
 	<key>NSWindow Frame SessionsPreferences</key>
 	<string>209 211 606 469 0 0 1440 877 </string>
 	<key>NSWindow Frame SharedPreferences</key>
-	<string>426 341 918 401 0 0 1440 877 </string>
+	<string>2184 253 937 512 1440 -180 1920 1080 </string>
 	<key>NSWindow Frame UKCrashReporter</key>
 	<string>99 293 592 584 0 0 1440 877 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>0 48 1440 829 0 0 1440 877 </string>
+	<string>505 456 650 402 0 0 1440 900 </string>
 	<key>NSWindow Frame iTerm Window 1</key>
-	<string>0 48 1440 829 0 0 1440 900 </string>
+	<string>-1440 629 650 425 -1440 180 1440 877 </string>
 	<key>New Bookmarks</key>
 	<array>
 		<dict>
@@ -644,7 +644,7 @@
 			<key>Transparency</key>
 			<real>0.023792480307421978</real>
 			<key>Unlimited Scrollback</key>
-			<false/>
+			<true/>
 			<key>Use Bold Font</key>
 			<true/>
 			<key>Use Bright Bold</key>
