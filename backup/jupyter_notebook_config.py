@@ -214,7 +214,7 @@ c.NotebookApp.open_browser = False
 #    from notebook.auth import passwd; passwd()
 #  
 #  The string should be of the form type:salt:hashed-password.
-c.NotebookApp.password = 'sha1:6936b5a9d9a5:cd002db81c5f456cc06368ecbbc2287bb9318b76'
+#c.NotebookApp.password = 'sha1:6936b5a9d9a5:cd002db81c5f456cc06368ecbbc2287bb9318b76'
 
 ## Forces users to use a password for the Notebook server. This is useful in a
 #  multi user environment, for instance when everybody in the LAN can access each
@@ -222,7 +222,7 @@ c.NotebookApp.password = 'sha1:6936b5a9d9a5:cd002db81c5f456cc06368ecbbc2287bb931
 #  
 #  In such a case, server the notebook server on localhost is not secure since
 #  any user can connect to the notebook server via ssh.
-#c.NotebookApp.password_required = False
+c.NotebookApp.password_required = False
 
 ## The port the notebook server will listen on.
 c.NotebookApp.port = 8000

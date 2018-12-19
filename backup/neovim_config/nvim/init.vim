@@ -83,6 +83,7 @@ let g:deoplete#sources#jedi#statement_length = 0
 let g:jedi#force_py_version = '3'
 " jedi-python
 let g:jedi#completions_enabled = 1
+let g:python3_host_prog = '~/.virtualenvs/mushroom/bin/python3.6'
 
 
 " NERDTree
@@ -105,7 +106,6 @@ let g:airline_section_c = 0
 let g:airline_section_y = 0
 let g:airline_section_warning = 0
 let g:airline_theme = 'alduin'
-let g:python3_host_prog = '/Users/kkchuchu/.virtualenvs/datascience/bin/python3.6'
 
 
 " map capslock to ctrl
