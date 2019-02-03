@@ -14,6 +14,7 @@ Plug 'jistr/vim-nerdtree-tabs'
 " Complete
 Plug 'Shougo/deoplete.nvim', { 'do': function('DoRemote') }
 Plug 'davidhalter/jedi-vim'
+Plug 'Shougo/unite.vim'
 
 " python indent
 Plug 'hynek/vim-python-pep8-indent'
@@ -83,7 +84,7 @@ let g:deoplete#sources#jedi#statement_length = 0
 let g:jedi#force_py_version = '3'
 " jedi-python
 let g:jedi#completions_enabled = 1
-let g:python3_host_prog = '~/.virtualenvs/mushroom/bin/python3.6'
+let g:python3_host_prog = '/Users/albert_chen/.virtualenvs/mushroom/bin/python'
 
 
 " NERDTree
