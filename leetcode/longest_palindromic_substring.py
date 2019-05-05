@@ -5,24 +5,27 @@ class Solution(object):
         :rtype: str
         """
         n = len(S)
-        dp = [[] for i in range(n)]
+        dp = []
         longest_len = -1
         longest_pair = (0, 0)
         for i, s_n_i in enumerate(S[::-1]):
+            dp_n_i = []
             row = n-i-1
             for j, s_j in enumerate(S):
+                if len(dp) <= n:
+                    dp.append([])
                 if row == j:
-                    dp[row].append(True)
+                    dp_n_i.append(True)
                 elif row < j:
-                    dp[row].append((S[row] == S[j] and dp[row+1][j-1]))
+                    dp_n_i.append((S[row] == S[j] and dp[row+1][j-1]))
                 else:
-                    dp[row].append(True)
+                    dp_n_i.append(True)
 
-                if dp[row][-1] and len(dp[row]) - row > longest_len:
-                    longest_len = len(dp[row]) - row
-                    longest_pair = (row, len(dp[row]))
+                if dp_n_i[-1] and len(dp_n_i) - row > longest_len:
+                    longest_len = len(dp_n_i) - row
+                    longest_pair = (row, len(dp_n_i))
+
+        print(dp)
         return S[longest_pair[0]: longest_pair[1]]
 assert Solution().longestPalindrome("cbbd") == "bb"
-s = Solution().longestPalindrome("babad")
-print s
-assert s == "bab"
+assert Solution().longestPalindrome("babad") == "bab"
