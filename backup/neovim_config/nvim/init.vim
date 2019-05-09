@@ -84,7 +84,7 @@ let g:deoplete#sources#jedi#statement_length = 0
 let g:jedi#force_py_version = '3'
 " jedi-python
 let g:jedi#completions_enabled = 1
-let g:python3_host_prog = '/Users/albert_chen/.virtualenvs/mushroom/bin/python'
+let g:python3_host_prog = '/Users/kkchuchu/.virtualenvs/mushroom/bin/python'
 
 
 " NERDTree
