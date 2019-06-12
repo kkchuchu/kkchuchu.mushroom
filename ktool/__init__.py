@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import warnings
-from scipy.stats import norm, skew
+from scipy import stats
 import seaborn as sns
 
 
