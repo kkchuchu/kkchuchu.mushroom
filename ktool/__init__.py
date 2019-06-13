@@ -1,12 +1,14 @@
-import matplotlib.pyplot as plt
-import numpy as np
-import pandas as pd
-import warnings
-from scipy import stats
-import seaborn as sns
+import sys
 
 
 def create_notebook_env():
+    import matplotlib.pyplot as plt
+    import numpy as np
+    import pandas as pd
+    import warnings
+    from scipy import stats
+    import seaborn as sns
+
     def ignore_warn(*args, **kwargs):
         pass
     warnings.warn = ignore_warn

@@ -1,6 +1,9 @@
 def get_basic(df):
+    print("=======")
     print(df.info())
+    print("=======")
     print(df.isnull().sum())
+    print("=======")
     df.head()
 
 def xgb_plot_features(booster, figsize=(10,14)):
