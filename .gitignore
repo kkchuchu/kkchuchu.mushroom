@@ -5,3 +5,5 @@ __pycache__/*
 backup/neovim_config/nvim/plugged/*
 data/*
 .ipynb_checkpoints
+tags
+tags.lock
