@@ -1,9 +1,9 @@
 # Definition for a binary tree node.
-# class TreeNode(object):
-#     def __init__(self, x):
-#         self.val = x
-#         self.left = None
-#         self.right = None
+class TreeNode(object):
+    def __init__(self, x):
+        self.val = x
+        self.left = None
+        self.right = None
 
 class Solution(object):
     def bstToGst(self, root):
@@ -12,4 +12,6 @@ class Solution(object):
         :rtype: TreeNode
         """
         pass
-        
+
+    def go_right_first(self, node):
+        pass
