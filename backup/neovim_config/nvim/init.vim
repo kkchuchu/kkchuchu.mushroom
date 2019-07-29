@@ -78,6 +78,7 @@ let g:deoplete#enable_at_startup = 1
 set completeopt+=preview
 
 let g:deoplete#sources#jedi#statement_length = 0
+highlight Pmenu guibg=#606060
 let g:jedi#force_py_version = '3'
 " jedi-python
 let g:jedi#completions_enabled = 1
