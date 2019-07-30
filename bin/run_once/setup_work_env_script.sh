@@ -2,10 +2,10 @@
 curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
 mkdir ~/.config
-ln -s ~/workspace/kkchuchu.mushroom/backup/neovim_config/vimwiki ~/vimwiki
 ln -s ~/workspace/kkchuchu.mushroom/backup/neovim_config/nvim ~/.config
 ln -s ~/workspace/kkchuchu.mushroom/backup/.gitconfig ~/.gitconfig
-ln -s ~../backup/.bashrc.backup ~/.bashrc
+ln -s ~/workspace/kkchuchu.mushroom/backup/ctags ~/.ctags
+ln -s ~/workspace/kkchuchu.mushroom/backup/bash_profile ~/.profile
 
 
 pip install virtualenv
@@ -29,5 +29,3 @@ export PYTHONSTARTUP="$(python -m jedi.__main__ repl)"
 # https://github.com/junegunn/vim-plug
 # fzf
 # https://github.com/junegunn/fzf
-
-
