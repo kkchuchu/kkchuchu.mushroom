@@ -78,10 +78,11 @@ let g:deoplete#enable_at_startup = 1
 set completeopt+=preview
 
 let g:deoplete#sources#jedi#statement_length = 0
+highlight Pmenu guibg=#606060
 let g:jedi#force_py_version = '3'
 " jedi-python
 let g:jedi#completions_enabled = 1
-let g:python3_host_prog = '/usr/bin/python3'
+let g:python3_host_prog = '~/.virtualenvs/mushroom/bin/python3'
 
 
 " NERDTree
@@ -90,8 +91,6 @@ let NERDTreeShowHidden=1
 " let g:nerdtree_tabs_open_on_console_startup = 1
 
 
-" map capslock to ctrl
-"command Ctrl2Capslock execute "!echo \"keycode 58 = Caps_Lock\" >> ~/keymap; echo \"keycode 58 = Escape\" >> ~/keymap; loadkeys ~/keymap; rm ~/keymap"
 " sample
 command -nargs=1 Echo echo <q-args>
 
@@ -121,75 +120,29 @@ let g:jedi#rename_command = "<leader>r"
 let g:fzf_buffers_jump = 1
 
 
-function! s:align_lists(lists)
-    let maxes = {}
-    for list in a:lists
-        let i = 0
-        while i < len(list)
-            let maxes[i] = max([get(maxes, i, 0), len(list[i])])
-            let i += 1
-        endwhile
-    endfor
-    for list in a:lists
-        call map(list, "printf('%-'.maxes[v:key].'s', v:val)")
-    endfor
-    return a:lists
-endfunction
-
-function! s:btags_source()
-    let lines = map(split(system(printf(
-                \ 'ctags -f - --sort=no --excmd=number --language-force=%s %s',
-                \ &filetype, expand('%:S'))), "\n"), 'split(v:val, "\t")')
-    if v:shell_error
-        throw 'failed to extract tags'
-    endif
-    return map(s:align_lists(lines), 'join(v:val, "\t")')
-endfunction
-
-function! s:btags_sink(line)
-    execute split(a:line, "\t")[2]
-endfunction
-
-function! s:btags()
-    try
-        call fzf#run({
-                    \ 'source':  s:btags_source(),
-                    \ 'options': '+m -d "\t" --with-nth 1,4.. -n 1 --tiebreak=index',
-                    \ 'down':    '40%',
-                    \ 'sink':    function('s:btags_sink')})
-    catch
-        echohl WarningMsg
-        echom v:exception
-        echohl None
-    endtry
-endfunction
-
-command! BTags call s:btags()
-
-
 function! s:tags_sink(line)
-    let parts = split(a:line, '\t\zs')
-    let excmd = matchstr(parts[2:], '^.*\ze;"\t')
-    execute 'silent e' parts[1][:-2]
-    let [magic, &magic] = [&magic, 0]
-    execute excmd
-    let &magic = magic
+  let parts = split(a:line, '\t\zs')
+  let excmd = matchstr(parts[2:], '^.*\ze;"\t')
+  execute 'silent e' parts[1][:-2]
+  let [magic, &magic] = [&magic, 0]
+  execute excmd
+  let &magic = magic
 endfunction
 
 function! s:tags()
-    if empty(tagfiles())
-        echohl WarningMsg
-        echom 'Preparing tags'
-        echohl None
-        call system('ctags -R')
-    endif
+  if empty(tagfiles())
+    echohl WarningMsg
+    echom 'Preparing tags'
+    echohl None
+    call system('ctags -R')
+  endif
 
-    call fzf#run({
-                \ 'source':  'cat '.join(map(tagfiles(), 'fnamemodify(v:val, ":S")')).
-                \            '| grep -v -a ^!',
-                \ 'options': '+m -d "\t" --with-nth 1,4.. -n 1 --tiebreak=index',
-                \ 'down':    '40%',
-                \ 'sink':    function('s:tags_sink')})
+  call fzf#run({
+  \ 'source':  'cat '.join(map(tagfiles(), 'fnamemodify(v:val, ":S")')).
+  \            '| grep -v -a ^!',
+  \ 'options': '+m -d "\t" --with-nth 1,4.. -n 1 --tiebreak=index',
+  \ 'down':    '40%',
+  \ 'sink':    function('s:tags_sink')})
 endfunction
 
 command! Tags call s:tags()
