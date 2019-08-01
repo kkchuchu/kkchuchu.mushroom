@@ -22,6 +22,7 @@ pip3 install neovim jedi
 
 # let python autocomplete in shell
 export PYTHONSTARTUP="$(python -m jedi.__main__ repl)"
+export PYTHONPATH="${PYTHONPATH}:/root/workspace/kkchuchu.mushroom/"
 
 
 # Reference
