@@ -15,15 +15,20 @@ class Solution(object):
         return root
 
     def go_right_first(self, node, right_parent_value):
+        node.right_sum, node.left_sum = 0, 0
         if node.right:
-            self.go_right_first(node.right, right_parent_value)
-        self.update_value(node, right_parent_value)
+            self.go_right_first(node.right, 0)
         if node.left:
             self.go_right_first(node.left, node.val)
+        self.update_value(node, right_parent_value)
 
     def update_value(self, node, right_parent_value):
-        node.val = right_parent_value + node.val
-        
+        if node.right:
+            child = node.right
+            node.right_sum = child.val + child.right_sum + child.left_sum
+        if node.left:
+            child = node.left
+            node.left_sum = child.val + child.right_sum + child.left_sum
 
 
 if __name__ == '__main__':
@@ -36,6 +41,17 @@ if __name__ == '__main__':
     root.right.left = TreeNode(5)
     root.right.right = TreeNode(7)
     root.right.right.right = TreeNode(8)
+    from ktool import util
+
     sol = Solution()
     root = sol.bstToGst(root)
-    print root.val
+
+    r = []
+    util.inorder_traversal(root, lambda x: x.val, r)
+    print(r)
+    r = []
+    util.inorder_traversal(root, lambda x: x.right_sum, r)
+    print(r)
+    r = []
+    util.inorder_traversal(root, lambda x: x.left_sum, r)
+    print(r)

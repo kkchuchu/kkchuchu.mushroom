@@ -39,10 +39,10 @@ def boxplot(df, column):
     plt.xlim(df[[column]].min(), df[['column']].max()*1.1)
     sns.boxplot(x=df[[column]])
 
-def inorder_traversal(node, r):
+def inorder_traversal(node, get_value_m, r):
     if node is None:
         return
     
-    inorder_traversal(node.left, r)
-    r.append(node.val)
-    inorder_traversal(node.right, r)
+    inorder_traversal(node.left, get_value_m, r)
+    r.append(get_value_m(node))
+    inorder_traversal(node.right, get_value_m, r)
