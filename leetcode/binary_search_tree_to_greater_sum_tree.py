@@ -12,7 +12,7 @@ class Solution(object):
         :rtype: TreeNode
         """
         self.go_right_first(root, 0)
-        return root
+        return self.create_new_tree(root)
 
     def go_right_first(self, node, right_parent_value):
         node.right_sum, node.left_sum = 0, 0
@@ -30,6 +30,31 @@ class Solution(object):
             child = node.left
             node.left_sum = child.val + child.right_sum + child.left_sum
 
+    def create_new_tree(self, old_root):
+        new_root = TreeNode(old_root.val)
+        self.update_greater_sum(new_root, old_root, 0)
+        return new_root
+
+    def inorder_traversal(self, node, upper_right):
+        if node.right:
+            self.inorder_traversal(node.right, 0)
+        if node.left:
+            self.inorder_traversal(node.left, node.val + node.right_sum + node.left_sum)
+
+    def update_greater_sum(self, new_node, node, upper_right):
+        if node.right:
+            new_node.right = TreeNode(node.right.val)
+            self.update_greater_sum(new_node.right, node.right, 0) # this line has problem, cant find the upper sum from parent
+            assert 1 == 2
+
+            down_right_sum = node.right.right_sum + node.right.val + node.right.left_sum
+        else:
+            down_right_sum = 0
+        new_node.val = node.val + down_right_sum + upper_right
+        if node.left:
+            new_node.left = TreeNode(node.left.val)
+            self.update_greater_sum(new_node.left, node.left, new_node.val)
+
 
 if __name__ == '__main__':
     root = TreeNode(4)
@@ -43,15 +68,9 @@ if __name__ == '__main__':
     root.right.right.right = TreeNode(8)
     from ktool import util
 
-    sol = Solution()
-    root = sol.bstToGst(root)
+    r = util.bfs_bst(root)
+    print(r)
 
-    r = []
-    util.inorder_traversal(root, lambda x: x.val, r)
-    print(r)
-    r = []
-    util.inorder_traversal(root, lambda x: x.right_sum, r)
-    print(r)
-    r = []
-    util.inorder_traversal(root, lambda x: x.left_sum, r)
-    print(r)
+    sol = Solution()
+    new_root = sol.bstToGst(root)
+    print(util.bfs_bst(new_root))
