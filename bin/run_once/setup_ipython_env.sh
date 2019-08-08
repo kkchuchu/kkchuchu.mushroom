@@ -5,5 +5,3 @@ chmod +x bin/*
 # Using a virtualenv in an IPython notebook
 # ref: https://help.pythonanywhere.com/pages/IPythonNotebookVirtualenvs/
 python -m ipykernel install --user --name=mushroom
-
-jupyter notebook --config=./backup/jupyter_notebook_config.py >&/dev/null &
