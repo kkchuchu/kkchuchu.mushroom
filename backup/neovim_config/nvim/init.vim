@@ -82,7 +82,7 @@ highlight Pmenu guibg=#606060
 let g:jedi#force_py_version = '3'
 " jedi-python
 let g:jedi#completions_enabled = 1
-let g:python3_host_prog = '~/.virtualenvs/mushroom/bin/python3'
+let g:python3_host_prog = expand('~/.virtualenvs/mushroom/bin/python3')
 
 
 " NERDTree
