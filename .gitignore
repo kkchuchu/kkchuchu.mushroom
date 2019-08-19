@@ -7,3 +7,4 @@ data/*
 .ipynb_checkpoints
 tags
 tags.lock
+ktool.egg-info/*
