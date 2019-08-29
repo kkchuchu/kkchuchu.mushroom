@@ -70,7 +70,7 @@ set foldlevel=99
 set list
 nnoremap <space> za
 map <C-U> :redo<CR>
-colorscheme solarized
+colorscheme wombat
 
 
 " python auto-complete
