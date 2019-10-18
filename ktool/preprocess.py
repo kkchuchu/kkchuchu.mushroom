@@ -23,6 +23,8 @@ def info(df: pd.DataFrame, hue: str=None, columns: list=None, display=display, c
 
     for cat_col in category_columns:
         display(barplot(x=cat_col, y=y_column, data=df))
+        
+    df.plot()
 
 
 def cat2cat(df: pd.DataFrame, x, y, hue: str=None):
