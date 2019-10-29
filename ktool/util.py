@@ -69,4 +69,32 @@ def bfs_bst(node):
             queue.append(None)
     return r
 
+def to_time_flow(df: pd.DataFrame, 
+                 time_column:str, flow_target_column:str, count_column:str =None, 
+                 time_range:list =None, default_value=0.):
+    """Convert a dataframe into a new dataframe with time index.
 
+    Parameters
+    ----------
+    df : 
+        data frame contains time data.
+    time_column :
+        time column.
+
+    Returns
+    -------
+    DataFrame
+        data frame with time index.
+
+    """
+    group_key = [time_column, flow_target_column]
+    if count_column is None:
+        t = df.groupby(by=group_key).size().reset_index(name='count')
+    else:
+        t = df.groupby(by=group_key)[count_column].sum().reset_index(name='count')
+    
+    trend = t.pivot(index=time_column, columns=flow_target_column, values='count') \
+             .fillna(default_value)
+    if time_range is not None:
+        trend = trend.reindex(pd.date_range(time_range[0], time_range[1]), fill_value=default_value)
+    return trend

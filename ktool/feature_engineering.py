@@ -4,7 +4,7 @@ from IPython.display import display, HTML
 from matplotlib import pyplot as plt
 
 
-def info(df: pd.DataFrame, hue: str=None, columns: list=None, display=display, category_columns: list=None, y_column=None):
+def run(df: pd.DataFrame, hue: str=None, columns: list=None, display=display, category_columns: list=None, y_column=None):
     if columns is None:
         columns = df.columns
 
@@ -23,6 +23,8 @@ def info(df: pd.DataFrame, hue: str=None, columns: list=None, display=display, c
 
     for cat_col in category_columns:
         display(barplot(x=cat_col, y=y_column, data=df))
+        
+    heatmap(df)
 
 
 def cat2cat(df: pd.DataFrame, x, y, hue: str=None):
