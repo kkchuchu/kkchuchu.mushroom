@@ -10,6 +10,7 @@ DEFAULT_COLOR_MAP = "YlGnBu"
 
 
 def run(df: pd.DataFrame, columns: list=None, category_columns: list=[], datetime_columns: list=[], numeric_columns: list=[],
+        string_columns: list=[],
         drop_duplicated=False,
         display_heatmap=False, display_duplicated=True, 
         height=DEFAULT_IMAGE_HEIGHT, display=display, color_map=DEFAULT_COLOR_MAP
@@ -23,10 +24,10 @@ def run(df: pd.DataFrame, columns: list=None, category_columns: list=[], datetim
     display(df.describe())
     print('records count are: ', len(df))
     
-    duplicated_count = df.duplicated().sum()
+    duplicated_count = df.duplicated(subset=columns).sum()
     print('duplicated: ', duplicated_count)
     if display_duplicated and duplicated_count > 0:
-        display(df[df.duplicated()])
+        display(df[df.duplicated(subset=columns)])
     
     
     print('null check: ')
@@ -49,6 +50,9 @@ def run(df: pd.DataFrame, columns: list=None, category_columns: list=[], datetim
             df[col] = df.apply(lambda x: datetime.fromtimestamp(x[col]), axis=1)
         else:
             df[col] = pd.to_datetime(df[col])
+            
+    for col in string_columns:
+        df[col] = df[col].astype('unicode')
     
 
     # heatmap
@@ -69,55 +73,81 @@ def show(df: pd.DataFrame, display_columns: list=None, show_count=True,
     https://seaborn.pydata.org/generated/seaborn.barplot.html
     cont2cont_action: cont2line or cont2cont
     
+    plot trend
+    Doc: https://seaborn.pydata.org/generated/seaborn.lineplot.html
+    
+    x: continuous, y:continuous
+    Doc: https://seaborn.pydata.org/generated/seaborn.relplot.html
+    
     date only be x (can not be y)
     '''
     if display_columns is None:
         display_columns = df.columns 
+    date_columns = [c for c in display_columns if is_datetime64_any_dtype(df.dtypes[c])]
+    non_date_columns = [c for c in display_columns if not is_datetime64_any_dtype(df.dtypes[c])]
         
     xy2actions = {
         'is_cont': { 
-            'is_cate': None,
+            'is_cate': cont2cate,
             'is_cont': cont2line,
-            'is_date': None,
         },
-        'is_cat' : {
-            'is_cate': cate2cate,
+        'is_cate' : {
+            'is_cate': None,
             'is_cont': cate2cont, 
-            'is_date': None,
         },
-        'is_date' :{
-            'is_cont': cont2line,
-            'is_cate': None,
-            'is_date': None,
-        }
     }
     
     
-    for i, x_c in enumerate(display_columns):
-        for y_c in display_columns[i+1:]:
-            print(x_c, y_c)
+    # non datetime type columns
+    for i, x_c in enumerate(non_date_columns):
+        for y_c in non_date_columns[i+1:]:
             x_key = _which_type(df.dtypes[x_c])
             y_key = _which_type(df.dtypes[y_c])
-            
             y_action_list = xy2actions[x_key]
             show_image = y_action_list[y_key]
             if show_image is not None:
-                display(show_image(df, x_c, y_c, hint=hint, subimage_column=subimage_column, height=height))
-            
+                print(x_c, y_c)
+                show_image(df, x_c, y_c, hint=hint, subimage_column=subimage_column, height=height)
+   
+    # datetime type columns
+    print('datetime display')
+    for x in date_columns:
+        y = [c for c in non_date_columns if is_numeric_dtype(df.dtypes[c])]
+        show_x_is_datetime(df, x, y, show_count=show_count,
+                           subimage_column=subimage_column, hint=hint,
+                           height=height, color_map=color_map,
+                           )
+    
+    # count
     if show_count:
         xcount2action = {
             'is_cont': cont2count,
             'is_cate': cate2count,
-            'is_date': cont2count,
         }
-        for i, x_c in enumerate(display_columns):
+        for x_c in non_date_columns:
+            print('show count', x_c)
             x_key = _which_type(df.dtypes[x_c])
             show_image = xcount2action[x_key]
-            display(show_image(df, x_c, hint=hint, subimage_column=subimage_column, height=height))
+            show_image(df, x_c, hint=hint, subimage_column=subimage_column, height=height)
+
+
+def show_x_is_datetime(df: pd.DataFrame, x, y, show_count=True,
+                       subimage_column: str=None, hint: str=None,
+                       height=DEFAULT_IMAGE_HEIGHT, color_map=DEFAULT_COLOR_MAP,
+                       ):
+    for y_c in y:
+        if not is_numeric_dtype(df.dtypes[y_c]):
+            print(y_c, 'should be numeric, but is', df.dtypes[y_c])
+        print(y_c)
+        cont2line(df, x, y_c, hint=hint, subimage_column=subimage_column, height=height)
+    
+    if show_count:
+        cont2count(df, x, hint=hint, subimage_column=subimage_column, height=height)
         
         
 def cate2count(df: pd.DataFrame, x, hint=None, subimage_column=None, height=DEFAULT_IMAGE_HEIGHT):
-    return sns.catplot(data=df, x=x, 
+    plt.figure()
+    sns.catplot(data=df, x=x, 
                        hue=hint, col=subimage_column,
                        kind='count', height=height)
 
@@ -126,35 +156,30 @@ def cont2count(df: pd.DataFrame, x, hint=None, subimage_column=None, height=DEFA
     y = x + '_count'
     d.rename(columns={'index': x, x: y}, inplace=True)
     return cont2cont(d, x, y, hint=hint, subimage_column=subimage_column, height=height)
-
-
-def cate2cate(df: pd.DataFrame, x, y, hint=None, subimage_column=None, height=DEFAULT_IMAGE_HEIGHT):
-    return sns.catplot(data=df, x=x, y=y, hue=hint, col=subimage_column, height=height)
     
+
 
 def cate2cont(df: pd.DataFrame, x, y, hint=None, subimage_column=None, height=DEFAULT_IMAGE_HEIGHT):
-    return sns.barplot(data=df, x=x, y=y, hue=hint, col=subimage_column, height=height)
-    
+    plt.figure()
+    sns.catplot(data=df, x=x, y=y, hue=hint, kind='bar', col=subimage_column)
+def cont2cate(df: pd.DataFrame, x, y, hint=None, subimage_column=None, height=DEFAULT_IMAGE_HEIGHT):
+    plt.figure()
+    sns.catplot(data=df, x=y, y=x, hue=hint, kind='bar', col=subimage_column)
+
 
 def cont2line(df: pd.DataFrame, x, y, hint=None, subimage_column=None, height=DEFAULT_IMAGE_HEIGHT):
-    '''
-    plot trend
-    Doc: https://seaborn.pydata.org/generated/seaborn.lineplot.html
-    '''
-    return sns.lineplot(data=df, x=x, y=y, hue=hint)
+    plt.figure()
+    sns.lineplot(data=df, x=x, y=y, hue=hint)
 
 
 def cont2cont(df: pd.DataFrame, x, y, hint=None, subimage_column=None, height=DEFAULT_IMAGE_HEIGHT):
-    '''
-    x: continuous, y:continuous
-    Doc: https://seaborn.pydata.org/generated/seaborn.relplot.html
-    '''
-    return sns.relplot(data=df, x=x, y=y, hue=hint, col=subimage_column, height=height)
+    plt.figure()
+    sns.relplot(data=df, x=x, y=y, hue=hint, col=subimage_column, height=height)
 
 
     
 def top(df, column: str, n: int=5):
-    display(df.sort_values(column, ascending=False).head(n))
+    return df.sort_values(column, ascending=False).head(n)
 
 
 def sort(df, by):
@@ -173,7 +198,5 @@ def _which_type(dtype):
         return 'is_cont'
     elif is_categorical_dtype(dtype):
         return 'is_cate'
-    elif is_datetime64_any_dtype(dtype):
-        return 'is_date'
     else:
         return None
