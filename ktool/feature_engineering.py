@@ -13,7 +13,7 @@ def run(df: pd.DataFrame, columns: list=None, category_columns: list=[], datetim
         string_columns: list=[],
         drop_duplicated=False,
         display_heatmap=False, display_duplicated=True, 
-        height=DEFAULT_IMAGE_HEIGHT, display=display, color_map=DEFAULT_COLOR_MAP
+        height=DEFAULT_IMAGE_HEIGHT, display=display, color_map=DEFAULT_COLOR_MAP, 
        ):
     if columns is None:
         columns = df.columns
@@ -57,13 +57,14 @@ def run(df: pd.DataFrame, columns: list=None, category_columns: list=[], datetim
 
     # heatmap
     if display_heatmap:
-        display(sns.heatmap(df.corr(), annot=True, cmap=color_map))
-        
+        plt.figure()
+        sns.heatmap(df.corr(), annot=True, cmap=color_map)
+
 
         
 def show(df: pd.DataFrame, display_columns: list=None, show_count=True,
          subimage_column: str=None, hint: str=None,
-         height=DEFAULT_IMAGE_HEIGHT, color_map=DEFAULT_COLOR_MAP,
+         height=DEFAULT_IMAGE_HEIGHT, color_map=DEFAULT_COLOR_MAP, display_pairplot=True, diag_kind="kde",
          ):
     '''
     doc: https://seaborn.pydata.org/generated/seaborn.countplot.html
@@ -96,6 +97,11 @@ def show(df: pd.DataFrame, display_columns: list=None, show_count=True,
             'is_cont': cate2cont, 
         },
     }
+    
+    # pairplot
+    if display_pairplot:
+        plt.figure()
+        sns.pairplot(df, hue=hint, palette=color_map, diag_kind=diag_kind, height=height)
     
     
     # non datetime type columns
