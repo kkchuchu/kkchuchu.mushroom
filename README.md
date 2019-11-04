@@ -3,6 +3,8 @@
 
 # Installization
 
+Install ktool
+
 ``` sh
 python setup.py install
 ```
