@@ -3,7 +3,6 @@ __pycache__/*
 *.tmp
 .DS_Store
 backup/neovim_config/nvim/plugged/*
-data/*
 .ipynb_checkpoints
 tags
 tags.lock
