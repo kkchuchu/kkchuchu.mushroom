@@ -1,100 +1,74 @@
-#!/usr/bin/python3
+import socket
+import struct
 
-import sys
-
-
-
-COLORS = ['black', 'blue', 'purple', 'yellow', 'white', 'red', 'lime', 'cyan', 'orange', 'gray']
-
-def create_notebook_env():
-    import seaborn as sns
-    import pandas as pd
-    # pd.set_option('display.expand_frame_repr', False)
-    sns.set(style="whitegrid", color_codes=True)
-    pd.options.display.max_columns = None
+import pandas as pd
+from sklearn.tree import _tree
 
 
-def check_df_before_modeling(df):
-    is_null_count = d.isnull().sum()
-    print('is null check result:')
-    print(is_null_count)
-
-def get_basic(df):
-    print("=======")
-    print(df.info())
-    print("=======")
-    print(df.isnull().sum())
-    print("=======")
-    df.head()
-
-def xgb_plot_features(booster, figsize=(10,14)):
-    from xgboost import plot_importance
-    fig, ax = plt.subplots(1,1,figsize=figsize)
-    return plot_importance(booster=booster, ax=ax)
+def ip2int(addr):
+    return struct.unpack("!I", socket.inet_aton(addr))[0]
 
 
-def boxplot(df, column):
-    import matplotlib.pyplot as plt
-    plt.figure(figsize=(10,4))
-    plt.xlim(df[[column]].min(), df[['column']].max()*1.1)
-    sns.boxplot(x=df[[column]])
+def int2ip(addr):
+    return socket.inet_ntoa(struct.pack("!I", addr))
 
 
-def inorder_traversal(node, get_value_m, r):
-    if node is None:
-        return
-
-    inorder_traversal(node.left, get_value_m, r)
-    r.append(get_value_m(node))
-    inorder_traversal(node.right, get_value_m, r)
+def iso8601toseconds(t):
+    import dateutil.parser as dp
+    parsed_t = dp.parse(t)
+    t_in_seconds = parsed_t.strftime('%s')
+    return t_in_seconds
 
 
-def bfs_bst(node):
-    queue = [node]
-    r = []
-    while len(queue) > 0:
-        cursor = queue.pop(0)
-        if cursor:
-            r.append(cursor.val)
-        else:
-            r.append(None)
-            continue
-        if cursor.left:
-            queue.append(cursor.left)
-        else:
-            queue.append(None)
-        if cursor.right:
-            queue.append(cursor.right)
-        else:
-            queue.append(None)
+def datetimetotimestamp(t):
+    return int(t.timestamp())
+
+
+def strtodatetime(t):
+    return pd.to_datetime(t)
+
+
+def count_by(df: pd.DataFrame, by: list = []):
+    """
+    Counting by the key list.
+    
+    Arguments:
+        df {pd.DataFrame} -- data source
+    
+    Keyword Arguments:
+        by {list} -- key list (default: {[]})
+    
+    Returns:
+        [pd.DataFrame] -- group by result
+    """
+    r = df.groupby(by=by).size().reset_index(name='count')
+    for x in by:
+        r.plot(x=x, y='count')
     return r
 
-def to_time_flow(df: pd.DataFrame, 
-                 time_column:str, flow_target_column:str, count_column:str =None, 
-                 time_range:list =None, default_value=0.):
-    """Convert a dataframe into a new dataframe with time index.
 
-    Parameters
-    ----------
-    df : 
-        data frame contains time data.
-    time_column :
-        time column.
-
-    Returns
-    -------
-    DataFrame
-        data frame with time index.
-
+def tree_to_code(tree, feature_names):
     """
-    group_key = [time_column, flow_target_column]
-    if count_column is None:
-        t = df.groupby(by=group_key).size().reset_index(name='count')
-    else:
-        t = df.groupby(by=group_key)[count_column].sum().reset_index(name='count')
-    
-    trend = t.pivot(index=time_column, columns=flow_target_column, values='count') \
-             .fillna(default_value)
-    if time_range is not None:
-        trend = trend.reindex(pd.date_range(time_range[0], time_range[1]), fill_value=default_value)
-    return trend
+    Outputing decision tree rules.
+    https://stackoverflow.com/questions/20224526/how-to-extract-the-decision-rules-from-scikit-learn-decision-tree
+    """
+    tree_ = tree.tree_
+    feature_name = [
+        feature_names[i] if i != _tree.TREE_UNDEFINED else "undefined!"
+        for i in tree_.feature
+    ]
+    print("def tree({}):".format(", ".join(feature_names)))
+
+    def recurse(node, depth):
+        indent = "  " * depth
+        if tree_.feature[node] != _tree.TREE_UNDEFINED:
+            name = feature_name[node]
+            threshold = tree_.threshold[node]
+            print("{}if {} <= {}:".format(indent, name, threshold))
+            recurse(tree_.children_left[node], depth + 1)
+            print("{}else:  # if {} > {}".format(indent, name, threshold))
+            recurse(tree_.children_right[node], depth + 1)
+        else:
+            print("{}return {}".format(indent, tree_.value[node]))
+
+    recurse(0, 1)

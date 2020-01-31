@@ -3,63 +3,12 @@ import seaborn as sns
 from IPython.display import display, HTML
 from matplotlib import pyplot as plt
 from pandas.api.types import is_numeric_dtype, is_datetime64_any_dtype, is_categorical_dtype
-
+import pandas as pd
+from sklearn.linear_model import LogisticRegression
+import numpy as np
 
 DEFAULT_IMAGE_HEIGHT = 14
 DEFAULT_COLOR_MAP = "YlGnBu"
-
-
-def run(df: pd.DataFrame, columns: list=None, category_columns: list=[], datetime_columns: list=[], numeric_columns: list=[],
-        string_columns: list=[],
-        drop_duplicated=False,
-        display_heatmap=False, display_duplicated=True, 
-        height=DEFAULT_IMAGE_HEIGHT, display=display, color_map=DEFAULT_COLOR_MAP, 
-       ):
-    if columns is None:
-        columns = df.columns
-
-        
-    # basic information
-    display(df.head())
-    display(df.describe())
-    print('records count are: ', len(df))
-    
-    duplicated_count = df.duplicated(subset=columns).sum()
-    print('duplicated: ', duplicated_count)
-    if display_duplicated and duplicated_count > 0:
-        display(df[df.duplicated(subset=columns)])
-    
-    
-    print('null check: ')
-    print(df.isnull().sum())
-    # TODO fill null
-    
-    
-    # drop duplicate and reset index
-    if drop_duplicated:
-        # TODO
-        assert False
-
-        
-    # type convert
-    for cat_col in category_columns:
-        df[cat_col] = df[cat_col].astype('category')
-        
-    for col in datetime_columns:
-        if is_numeric_dtype(df.dtypes[col]):
-            df[col] = df.apply(lambda x: datetime.fromtimestamp(x[col]), axis=1)
-        else:
-            df[col] = pd.to_datetime(df[col])
-            
-    for col in string_columns:
-        df[col] = df[col].astype('unicode')
-    
-
-    # heatmap
-    if display_heatmap:
-        plt.figure()
-        sns.heatmap(df.corr(), annot=True, cmap=color_map)
-
 
         
 def show(df: pd.DataFrame, display_columns: list=None, show_count=True,
@@ -157,6 +106,7 @@ def cate2count(df: pd.DataFrame, x, hint=None, subimage_column=None, height=DEFA
                        hue=hint, col=subimage_column,
                        kind='count', height=height)
 
+
 def cont2count(df: pd.DataFrame, x, hint=None, subimage_column=None, height=DEFAULT_IMAGE_HEIGHT):
     d = df[x].value_counts().reset_index()
     y = x + '_count'
@@ -164,10 +114,11 @@ def cont2count(df: pd.DataFrame, x, hint=None, subimage_column=None, height=DEFA
     return cont2cont(d, x, y, hint=hint, subimage_column=subimage_column, height=height)
     
 
-
 def cate2cont(df: pd.DataFrame, x, y, hint=None, subimage_column=None, height=DEFAULT_IMAGE_HEIGHT):
     plt.figure()
     sns.catplot(data=df, x=x, y=y, hue=hint, kind='bar', col=subimage_column)
+
+
 def cont2cate(df: pd.DataFrame, x, y, hint=None, subimage_column=None, height=DEFAULT_IMAGE_HEIGHT):
     plt.figure()
     sns.catplot(data=df, x=y, y=x, hue=hint, kind='bar', col=subimage_column)
@@ -180,10 +131,9 @@ def cont2line(df: pd.DataFrame, x, y, hint=None, subimage_column=None, height=DE
 
 def cont2cont(df: pd.DataFrame, x, y, hint=None, subimage_column=None, height=DEFAULT_IMAGE_HEIGHT):
     plt.figure()
-    sns.relplot(data=df, x=x, y=y, hue=hint, col=subimage_column, height=height)
+    sns.scatterplot(data=df, x=x, y=y, hue=hint, col=subimage_column, height=height)
 
 
-    
 def top(df, column: str, n: int=5):
     return df.sort_values(column, ascending=False).head(n)
 
@@ -206,3 +156,28 @@ def _which_type(dtype):
         return 'is_cate'
     else:
         return None
+
+
+def odd_ratio(df, x, y):
+    """
+    https://dasanlin888.pixnet.net/blog/post/34469402
+    
+    odd ratio could consider as independent as well when odd == 1
+    https://en.wikipedia.org/wiki/Odds_ratio
+    """
+    # TODO
+    clf = LogisticRegression(C=1e5)
+    X = df[x].values.reshape(200,1)
+    clf.fit(X,y)
+    np.exp(clf.coef_)
+    pass
+
+
+def cont2cont_point(df: pd.DataFrame):
+    """[summary]
+    
+    Arguments:
+        df {[type]} -- [description]
+    """
+    # TODO
+    sns.scatterplot(df)
