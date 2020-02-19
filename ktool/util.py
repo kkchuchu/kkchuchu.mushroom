@@ -46,6 +46,11 @@ def count_by(df: pd.DataFrame, by: list = []):
         r.plot(x=x, y='count')
     return r
 
+def chunks(lst, n):
+    """Yield successive n-sized chunks from lst."""
+    for i in range(0, len(lst), n):
+        yield lst[i:i + n]
+
 
 def tree_to_code(tree, feature_names):
     """
