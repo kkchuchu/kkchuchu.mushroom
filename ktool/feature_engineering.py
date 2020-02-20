@@ -10,7 +10,6 @@ import numpy as np
 DEFAULT_IMAGE_HEIGHT = 14
 DEFAULT_COLOR_MAP = "YlGnBu"
 
-<<<<<<< HEAD
 
 def run(df: pd.DataFrame, columns: list=None, category_columns: list=[], datetime_columns: list=[], numeric_columns: list=[],
         string_columns: list=[],
@@ -64,9 +63,6 @@ def run(df: pd.DataFrame, columns: list=None, category_columns: list=[], datetim
         sns.heatmap(df.corr(), annot=True, cmap=color_map)
 
 
-=======
-        
->>>>>>> origin/master
 def show(df: pd.DataFrame, display_columns: list=None, show_count=True,
          subimage_column: str=None, hint: str=None,
          height=DEFAULT_IMAGE_HEIGHT, color_map=DEFAULT_COLOR_MAP, display_pairplot=True, diag_kind="kde",
