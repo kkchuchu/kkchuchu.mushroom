@@ -1,7 +1,7 @@
 export BASH_CONF="bashrc"
 export LC_ALL=en_US.UTF-8
 
-export MUSHROOMBASE=~/workspace/kkchuchu.mushroom
+export MUSHROOMBASE=~/workspace/mushroom
 export PATH=$PATH:${MUSHROOMBASE}/bin/
 
 export GITAWAREPROMPT=${MUSHROOMBASE}/bin/git-aware-prompt
