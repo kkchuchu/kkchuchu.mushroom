@@ -61,7 +61,6 @@ def run(df: pd.DataFrame, columns: list=None, category_columns: list=[], datetim
         sns.heatmap(df.corr(), annot=True, cmap=color_map)
 
 
-        
 def show(df: pd.DataFrame, display_columns: list=None, show_count=True,
          subimage_column: str=None, hint: str=None,
          height=DEFAULT_IMAGE_HEIGHT, color_map=DEFAULT_COLOR_MAP, display_pairplot=True, diag_kind="kde",

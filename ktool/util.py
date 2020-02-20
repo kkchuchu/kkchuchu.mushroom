@@ -73,6 +73,7 @@ def to_time_flow(df: pd.DataFrame,
                  time_column:str, flow_target_column:str, count_column:str =None, 
                  time_range:list =None, default_value=0.):
     """Convert a dataframe into a new dataframe with time index.
+    date_range freq: https://pandas.pydata.org/pandas-docs/stable/user_guide/timeseries.html#timeseries-offset-aliases
 
     Parameters
     ----------
