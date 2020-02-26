@@ -24,3 +24,9 @@ pip3 install -e .
 3. Run python setup.py sdist bdist_wheel
 
 Ref: https://packaging.python.org/tutorials/packaging-projects/
+
+## Installing auto-sklearn 
+``` sh
+curl https://raw.githubusercontent.com/automl/auto-sklearn/master/requirements.txt | xargs -n 1 -L 1 pip install
+pip install auto-sklearn
+```
