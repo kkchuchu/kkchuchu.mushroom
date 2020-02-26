@@ -30,3 +30,4 @@ Ref: https://packaging.python.org/tutorials/packaging-projects/
 curl https://raw.githubusercontent.com/automl/auto-sklearn/master/requirements.txt | xargs -n 1 -L 1 pip install
 pip install auto-sklearn
 ```
+Ref: https://automl.github.io/auto-sklearn/master/installation.html
