@@ -4,8 +4,8 @@ from sklearn import model_selection
 
 class BaseModel(object):
 
-    def __init__(self, feature_types, time_left_for_this_task=120, per_run_time_limit=30, train_test_split=False,
-                 dataset_name="ktool", tmp_folder='/tmp', output_folder='/tmp'):
+    def __init__(self, config, feature_types, time_left_for_this_task=120, per_run_time_limit=30, train_test_split=False,
+                 dataset_name="ktool"):
         """[summary]
 
         Arguments:
@@ -21,9 +21,10 @@ class BaseModel(object):
         self._per_run_time_limit = per_run_time_limit
         self._random_state = 1
         self._train_test_split = train_test_split
-        self._dataset_name = self._dataset_name
-        self._tmp_folder = tmp_folder
-        self._output_folder = output_folder
+        self._dataset_name = dataset_name
+        self.config = config
+        self._tmp_folder = self.config.get_project_tmp_folder()
+        self._output_folder = self.config.get_project_base_folder()
 
     def run(self):
         self.predict(x, y)
