@@ -25,27 +25,34 @@ class BaseModel(object):
         self.config = config
         self._tmp_folder = self.config.get_project_tmp_folder()
         self._output_folder = self.config.get_project_base_folder()
+        
+        self.model = regression.AutoSklearnRegressor(
+            time_left_for_this_task=self._time_left_for_this_task,
+            per_run_time_limit=self._per_run_time_limit,
+            tmp_folder=self._tmp_folder,
+            output_folder=self._output_folder,
+        )
 
     def run(self):
         self.predict(x, y)
 
-    def predict(self, x, y):
+    def fit(self, x, y):
+        X_train, y_train = x, y
+        self.model.fit(X_train, y_train, dataset_name=self._dataset_name,
+                   feat_type=self._feature_types)
+        print(self.model.show_models())
+        
+            
+    def predict(self, x):
+        return self.model.predict(x)
+
+    def evaluate(self, x, y):
         if self._train_test_split:
             X_train, X_test, y_train, y_test = \
                 model_selection.train_test_split(
                     x, y, random_state=self._random_state)
         else:
             X_train, X_test, y_train, y_test = x, None, y, None
-        automl = regression.AutoSklearnRegressor(
-            time_left_for_this_task=self._time_left_for_this_task,
-            per_run_time_limit=self._per_run_time_limit,
-            tmp_folder=self._tmp_folder,
-            output_folder=self._output_folder,
-        )
-        automl.fit(X_train, y_train, dataset_name=self._dataset_name,
-                   feat_type=self._feature_types)
-        print(automl.show_models())
-        
         if X_test is not None:
-            predictions = automl.predict(X_test)
+            predictions = self.model.predict(X_test)
             # print("R2 score:", sklearn.metrics.r2_score(y_test, predictions))

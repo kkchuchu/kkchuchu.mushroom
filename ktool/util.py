@@ -9,6 +9,16 @@ import pandas as pd
 import numpy as np
 from sklearn.tree import _tree
 
+from pyspark import SparkConf
+
+
+def set_spark_conf(spark_master_url, app_name, spark_serializer, spark_jars):
+    sc_conf = SparkConf() \
+            .setMaster(spark_master_url) \
+            .setAppName(app_name) \
+            .set("spark.serializer", spark_serializer) \
+            .set("spark.jars", spark_jars)
+    return sc_conf
 
 def ip2int(addr):
     return struct.unpack("!I", socket.inet_aton(addr))[0]
@@ -18,23 +28,47 @@ def int2ip(addr):
     return socket.inet_ntoa(struct.pack("!I", addr))
 
 
-def iso8601toseconds(t):
-    import dateutil.parser as dp
-    parsed_t = dp.parse(t)
-    t_in_seconds = parsed_t.strftime('%s')
-    return t_in_seconds
+class TimeConverter(object):
+    
+    @staticmethod
+    def toTS(t):
+        if isinstance(t, datetime.datetime):
+            return TimeConverter.datetime2timestamp(t)
+        else:
+            return TimeConverter.iso8601toseconds(t)
+        
+    @staticmethod
+    def toDT(t):
+        if isinstance(t, (float, int)):
+            return TimeConverter.timestamp2datetime(t)
+        elif isinstance(t, np.datetime64):
+            return TimeConverter.numpydatetime2timestamp(t)
+        else:
+            return TimeConverter.str2datetime(t)
+            
+    @staticmethod
+    def iso8601toseconds(t):
+        import dateutil.parser as dp
+        parsed_t = dp.parse(t)
+        t_in_seconds = parsed_t.strftime('%s')
+        return t_in_seconds
 
+    @staticmethod
+    def datetime2timestamp(t):
+        return int(t.timestamp())
 
-def datetimetotimestamp(t):
-    return int(t.timestamp())
+    @staticmethod
+    def timestamp2datetime(t):
+        return datetime.datetime.fromtimestamp(t)
 
+    @staticmethod
+    def str2datetime(t):
+        return pd.to_datetime(t)
 
-def timestamp2datetime(t):
-    return datetime.datetime.fromtimestamp(t)
-
-
-def strtodatetime(t):
-    return pd.to_datetime(t)
+    @staticmethod
+    def numpydatetime2timestamp(t: np.datetime64):
+        ts = (t - np.datetime64('1970-01-01T00:00:00Z')) / np.timedelta64(1, 's')
+        return ts
 
 
 def count_by(df: pd.DataFrame, by: list = []):
@@ -82,18 +116,8 @@ def to_time_flow(df: pd.DataFrame,
         data frame with time index.
 
     """
-    if df[time_column].dtype is np.dtype('int64'): # timestamp
-        time_converter = lambda x: datetime.datetime.fromtimestamp(x[time_column])
-    elif df[time_column].dtype is np.dtype('str'):
-        try:
-            int(df['time_column'].values[0])
-            time_converter = lambda x: datetime.datetime.fromtimestamp(int(x[time_column]))
-        except ValueError:
-            time_converter = lambda x: datetime.datetime.strptime(x[time_column], time_str_format)
-    else:
-        raise Exception("Not Supported time column or datetime format is not fitting.")
             
-    df["_datetime_column"] = df.apply(lambda x: time_converter(x), axis=1)
+    df["_datetime_column"] = df.apply(lambda x: TimeConverter.toDT(x), axis=1)
 
     group_key = ["_datetime_column", flow_target_column]
     if count_column is None: # count records
