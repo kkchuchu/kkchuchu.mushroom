@@ -31,3 +31,17 @@ curl https://raw.githubusercontent.com/automl/auto-sklearn/master/requirements.t
 pip install auto-sklearn
 ```
 Ref: https://automl.github.io/auto-sklearn/master/installation.html
+
+## Downloading Data From Kaggle
+
+1. Install kaggle command
+``` sh
+pip install kaggle
+```
+2. Download compressed files
+``` sh
+kaggle competitions download -c competitive-data-science-predict-future-sales
+```
+
+3. Go to https://www.kaggle.com/kkchuchu/account
+4. Click "Create New API Token"
