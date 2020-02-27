@@ -38,10 +38,10 @@ Ref: https://automl.github.io/auto-sklearn/master/installation.html
 ``` sh
 pip install kaggle
 ```
-2. Download compressed files
+2. Go to https://www.kaggle.com/kkchuchu/account
+3. Click "Create New API Token"
+4. Download compressed files
 ``` sh
 kaggle competitions download -c competitive-data-science-predict-future-sales
 ```
 
-3. Go to https://www.kaggle.com/kkchuchu/account
-4. Click "Create New API Token"
