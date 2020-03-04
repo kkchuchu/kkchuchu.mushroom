@@ -97,69 +97,40 @@ def chunks(lst, n):
 
 
 def to_time_flow(df: pd.DataFrame, 
-                 time_column:str, flow_target_column:str, count_column:str =None, 
-                 time_range:list =None, default_value=0.,
-                 time_str_format = '%Y%m%d%H%M%S',
-                 agg_freq="1S"):
-    """Convert a dataframe into a new dataframe with time index.
-    date_range freq: https://pandas.pydata.org/pandas-docs/stable/user_guide/timeseries.html#timeseries-offset-aliases
-    Parameters
-    ----------
-    df : 
-        data frame contains time data.
-    time_column :
-        time column.
-
-    Returns
-    -------
-    DataFrame
-        data frame with time index.
-
-    """
-            
-    df["_datetime_column"] = df.apply(lambda x: TimeConverter.toDT(x), axis=1)
-
-    group_key = ["_datetime_column", flow_target_column]
-    if count_column is None: # count records
-        t = df.groupby(by=group_key).size().reset_index(name='count')
-    else: # sum records
-        t = df.groupby(by=group_key)[count_column].sum().reset_index(name='count')
+                 group_by_col:list, agg:dict,
+                 time_range_start=None, time_range_end=None, time_range_freq="1S"):
+    """[summary]
     
-    # trend = t.pivot(index=time_column, columns=flow_target_column, values='count') \
-    #          .fillna(default_value)
-    if time_range is not None:
-        time_range = pd.date_range(time_range[0], time_range[1], freq=agg_freq)
-    else:
-        time_range = pd.date_range(df.index.min(), df.index.max(), freq=agg_freq)
-    trend = trend.reindex(time_range, fill_value=default_value)
+    Arguments:
+        df {pd.DataFrame} -- [description]
+        group_by_col {list} -- [description]
+        agg {dict} -- ex: {'col1': sum, 'col2', max}
+    
+    Keyword Arguments:
+        time_range_start {[type]} -- [date_range start] (default: {None})
+        time_range_end {[type]} -- [date_range end] (default: {None})
+        time_range_freq {str} -- [10S etc.] (default: {"1S"})
+    
+    Returns:
+        [type] -- [description]
+    """
+    if time_range_start is None:
+        time_range_start = df[group_by_col].min()[0]
+    if time_range_end is None:
+        time_range_end = df[group_by_col].max()[0]
+    new_ix = pd.date_range(time_range_start, time_range_end, freq=time_range_freq)
+    trend = df.groupby(group_by_col).agg(agg).reindex(new_ix, fill_value=0.)
+    
     return trend
 
 
-def tree_to_code(tree, feature_names):
-    """
-    Outputing decision tree rules.
-    https://stackoverflow.com/questions/20224526/how-to-extract-the-decision-rules-from-scikit-learn-decision-tree
-    """
-    tree_ = tree.tree_
-    feature_name = [
-        feature_names[i] if i != _tree.TREE_UNDEFINED else "undefined!"
-        for i in tree_.feature
-    ]
-    print("def tree({}):".format(", ".join(feature_names)))
+def display_tree(a_tree):
+    import graphviz
+    from sklearn.tree import export_graphviz
 
-    def recurse(node, depth):
-        indent = "  " * depth
-        if tree_.feature[node] != _tree.TREE_UNDEFINED:
-            name = feature_name[node]
-            threshold = tree_.threshold[node]
-            print("{}if {} <= {}:".format(indent, name, threshold))
-            recurse(tree_.children_left[node], depth + 1)
-            print("{}else:  # if {} > {}".format(indent, name, threshold))
-            recurse(tree_.children_right[node], depth + 1)
-        else:
-            print("{}return {}".format(indent, tree_.value[node]))
-
-    recurse(0, 1)
+    dot_data = export_graphviz(a_tree, out_file=None) 
+    graph = graphviz.Source(dot_data) 
+    return graph
 
 
 class BaseConfig(object):
