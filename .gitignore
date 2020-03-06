@@ -7,3 +7,4 @@ backup/neovim_config/nvim/plugged/*
 tags
 tags.lock
 ktool.egg-info/*
+input/*
