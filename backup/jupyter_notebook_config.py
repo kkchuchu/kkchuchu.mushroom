@@ -605,3 +605,7 @@ c.NotebookApp.port = 8080
 #  
 #  By default, all installed kernels are allowed.
 #c.KernelSpecManager.whitelist = set()
+c.InteractiveShellApp.extensions = [
+    'autoreload',
+    'tensorboard'
+]
