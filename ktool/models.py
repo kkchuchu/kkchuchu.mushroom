@@ -6,7 +6,7 @@ from .util import BaseConfig
 
 class BaseModel(object):
 
-    def __init__(self, config=None, time_left_for_this_task=120, per_run_time_limit=30, train_test_split=False,
+    def __init__(self, config, time_left_for_this_task=120, per_run_time_limit=30, train_test_split=False,
                  dataset_name="ktool", default_project_name="default_project", *args, **kwargs):
         """[summary]
 
@@ -24,12 +24,9 @@ class BaseModel(object):
         self._random_state = 1
         self._train_test_split = train_test_split
         self._dataset_name = dataset_name
-        if config is None:
-            self.config = BaseConfig('./output/', default_project_name)
-        else:
-            self.config = config
+        self.config = config
         self._tmp_folder = self.config.get_project_tmp_folder()
-        self._output_folder = self.config.get_project_base_folder()
+        self._output_folder = self.config.get_this_time_project_folder()
         print("temp folder: %r", self._tmp_folder)
         print("output folder: %r", self._output_folder)
         
