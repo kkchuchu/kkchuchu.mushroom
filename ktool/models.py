@@ -1,7 +1,23 @@
 from autosklearn import regression
 from sklearn import model_selection
 
+from sklearn.metrics import mean_squared_error
+from math import sqrt
+from autosklearn import metrics
+
 from .util import BaseConfig
+
+
+def rmse(y_actual, y_predicted):
+    return sqrt(mean_squared_error(y_actual, y_predicted) + 1),
+
+
+root_mean_squared_error = metrics.make_scorer(
+    "root_mean_squared_error",
+    metrics.mean_squared_error,
+    optimum=0,
+    greater_is_better=False
+)
 
 
 class BaseModel(object):
