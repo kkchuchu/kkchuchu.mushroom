@@ -9,12 +9,12 @@ from .util import BaseConfig
 
 
 def rmse(y_actual, y_predicted):
-    return mean_squared_error(y_actual, y_predicted, squared=True),
+    return np.sqrt(mean_squared_error(y_actual, y_predicted))
 
 
 root_mean_squared_error = metrics.make_scorer(
     "root_mean_squared_error",
-    np.rmse,
+    rmse,
     optimum=0,
     greater_is_better=False
 )
