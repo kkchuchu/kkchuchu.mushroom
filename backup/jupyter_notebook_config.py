@@ -11,9 +11,8 @@
 
 ## The Logging format template
 #c.Application.log_format = '[%(name)s]%(highlevel)s %(message)s'
-
 ## Set the log level by value or name.
-#c.Application.log_level = 30
+c.Application.log_level = 30
 
 #------------------------------------------------------------------------------
 # JupyterApp(Application) configuration
@@ -59,7 +58,7 @@ c.NotebookApp.allow_origin = '*'
 #c.NotebookApp.allow_origin_pat = ''
 
 ## Whether to allow the user to run the notebook as root.
-#c.NotebookApp.allow_root = False
+c.NotebookApp.allow_root = True
 
 ## DEPRECATED use base_url
 #c.NotebookApp.base_project_url = '/'
