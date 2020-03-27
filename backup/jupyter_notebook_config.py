@@ -563,7 +563,7 @@ c.NotebookApp.port = 8080
 #c.FileContentsManager.root_dir = ''
 
 ## DEPRECATED, use post_save_hook. Will be removed in Notebook 5.0
-#c.FileContentsManager.save_script = False
+c.FileContentsManager.save_script = True
 
 #------------------------------------------------------------------------------
 # NotebookNotary(LoggingConfigurable) configuration
