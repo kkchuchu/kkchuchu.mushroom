@@ -44,4 +44,6 @@ pip install kaggle
 ``` sh
 kaggle competitions download -c competitive-data-science-predict-future-sales
 ```
+## Reference
 
+- jupyter config: https://ipython.readthedocs.io/en/stable/interactive/magics.html
