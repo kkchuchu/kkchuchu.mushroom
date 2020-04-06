@@ -4,6 +4,12 @@ import datetime
 from pathlib import Path
 from configparser import ConfigParser
 import os
+import json
+import os
+import datetime
+import time
+import pytz
+import dateutil
 
 import pandas as pd
 import numpy as np
@@ -98,24 +104,23 @@ def chunks(lst, n):
         yield lst[i:i + n]
 
 
+def time_converter(t, return_type="dt", timezone=pytz.utc, time_format="%Y-%m-%d"):
+    if return_type == "ts":
+        return datetime.datetime.timestamp(t)
+    elif return_type == "dt":
+        if isinstance(t, (int, float)):
+            return datetime.datetime.utcfromtimestamp(t).replace(tzinfo=pytz.utc)
+        elif isinstance(t, (datetime.datetime)):
+            return t.replace(tzinfo=timezone)
+        elif isinstance(t, (str)):
+            try:
+                return dateutil.parser.parse(t) # example: '2020-04-05T20:00:00.000Z', rfc822
+            except ValueError:
+                return datetime.datetime.strptime(t, format=time_format)
+
 def to_time_flow(df: pd.DataFrame,
                  group_by_col: list, agg: dict,
                  time_range_start=None, time_range_end=None, time_range_freq="1S"):
-    """[summary]
-
-    Arguments:
-        df {pd.DataFrame} -- [description]
-        group_by_col {list} -- [description]
-        agg {dict} -- ex: {'col1': sum, 'col2', max}
-
-    Keyword Arguments:
-        time_range_start {[type]} -- [date_range start] (default: {None})
-        time_range_end {[type]} -- [date_range end] (default: {None})
-        time_range_freq {str} -- [10S etc.] (default: {"1S"})
-
-    Returns:
-        [type] -- [description]
-    """
     if time_range_start is None:
         time_range_start = df[group_by_col].min()[0]
     if time_range_end is None:
