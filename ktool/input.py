@@ -18,6 +18,8 @@ from sqlalchemy.ext.automap import automap_base
 import pandas as pd
 from elasticsearch import Elasticsearch, helpers
 
+from ktool.util import NotSupportedError, TS
+
 
 class BaseConnector(object):
 
@@ -31,7 +33,7 @@ class BaseConnector(object):
         pass
 
 
-class ESConnector(object):
+class ESConnector(BaseConnector):
 
     def __init__(self, host, port=9200, timeout=60, default_index=None):
         self.elasticsearch_hosts = [host]
@@ -111,7 +113,7 @@ class ConnectionStringGenerator(object):
         pass
 
 
-class SQLDBConnector(object):
+class SQLDBConnector(BaseConnector):
 
     def __init__(self, connection_str, autocommit=False, autoflush=False, pool_size=5, pool_recycle=7200, pool_timeout=7200,
                  auto_map=False, auto_map_tables=None):
@@ -261,17 +263,18 @@ class DataManager(object):
     def __init__(self, project_name, root_folder, input_folder=None, metadata_folder=None, output_folder=None, created_time=None):
         super().__init__()
         if created_time is None:
-            self._created_time = datetime.datetime.now()
+            self._created_time = datetime.datetime.utcnow()
         else:
             self._created_time = created_time
-        import calendar
-        ts = calendar.timegm(self._created_time.timetuple())
+        ts = int(TS.to(self._created_time, TS.TIMESTAMP))
             
-        self._project_root_folder = Path(root_folder) / Path(project_name)
-        self._this_time_project_root_folder = self._project_root_folder / Path(str(ts))
+        self._this_time_project_root_folder = Path(root_folder) / Path(project_name) / Path(str(ts))
         self.project_workspace = FileConnector(self._this_time_project_root_folder)
+        if metadata_folder is not None:
+            self.meta_workspace = FileConnector(metadata_folder)
+        if input_folder is not None:
+            self.input_workspace = FileConnector(input_folder)
         if output_folder is not None:
-            self._output_folder = Path(output_folder)
             self.output_workspace = FileConnector(self._output_folder)
         self.connectors = {}
             
@@ -291,7 +294,7 @@ class DataManager(object):
         elif c_type == "service":
             return ServiceConnector
         else:
-            raise Exception("Not supported connector type", c_type) 
+            raise NotSupportedError("Not supported connector type", c_type) 
         
         
     def add_resource(self, name, connector_type, **kwargs):

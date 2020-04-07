@@ -1,4 +1,4 @@
-import ktool.util
+from ktool import util
 
 
 import sys
