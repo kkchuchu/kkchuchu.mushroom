@@ -3,8 +3,6 @@
 %matplotlib inline
 %precision 4
 %reload_ext autoreload
-# Load the TensorBoard notebook extension.
-%load_ext tensorboard
 
 import re
 import sys
@@ -12,6 +10,11 @@ import math
 import random
 import os
 from datetime import datetime
+
+
+import logging
+logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
+
 
 import numpy as np
 from matplotlib import pyplot as plt
@@ -33,3 +36,5 @@ import seaborn as sns
 sns.set(style="whitegrid")
 
 import ktool
+
+# %%time

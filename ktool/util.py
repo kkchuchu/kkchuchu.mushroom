@@ -16,6 +16,11 @@ import numpy as np
 from sklearn.tree import _tree
 
 
+def startup():
+    import time
+    print(123)
+    pass
+
 def set_spark_conf(spark_master_url, app_name, spark_serializer, spark_jars):
     from pyspark import SparkConf
     sc_conf = SparkConf() \

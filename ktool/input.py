@@ -6,6 +6,8 @@ from pathlib import Path
 import urllib
 import pandas
 import datetime
+import logging
+
 
 from joblib import dump, load
 import sqlalchemy
@@ -19,6 +21,8 @@ import pandas as pd
 from elasticsearch import Elasticsearch, helpers
 
 from ktool.util import NotSupportedError, TS
+
+logger = logging.getLogger("jupyter")
 
 
 class BaseConnector(object):
@@ -191,6 +195,7 @@ class FileConnector(BaseConnector):
         super().__init__()
         self.folder_path = Path(folder_path)
         self._create_folder_without_error(self.folder_path)
+        logger.debug("create folder: %r", self.folder_path)
         
     def read(self, file_name):
         file_path = self.folder_path / Path(file_name)

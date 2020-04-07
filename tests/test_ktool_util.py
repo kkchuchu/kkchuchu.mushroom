@@ -8,6 +8,7 @@ from joblib import dump, load
 import numpy as np
 import shutil
 import pytz
+import random
 
 from ktool.util import TS, IP
 
@@ -33,7 +34,7 @@ class TestKToolUtil(unittest.TestCase):
         pass
 
     def setUp(self):
-        pass
+        random.seed(self.seed)
 
     def test_time_converter__normal(self):
         e_d = datetime.datetime(
