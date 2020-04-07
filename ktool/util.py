@@ -15,10 +15,9 @@ import pandas as pd
 import numpy as np
 from sklearn.tree import _tree
 
-from pyspark import SparkConf
-
 
 def set_spark_conf(spark_master_url, app_name, spark_serializer, spark_jars):
+    from pyspark import SparkConf
     sc_conf = SparkConf() \
         .setMaster(spark_master_url) \
         .setAppName(app_name) \
@@ -164,69 +163,3 @@ def display_tree(a_tree):
     dot_data = export_graphviz(a_tree, out_file=None)
     graph = graphviz.Source(dot_data)
     return graph
-
-
-class BaseConfig(object):
-
-    def __init__(self, root_path, project_name, created_time: datetime.datetime = None, created_time_format="ts"):
-        """[summary]
-        {root}/{project}/{time}/
-        Arguments:
-            log_base_folder_path {[type]} -- [description]
-            project_name {[type]} -- [description]
-
-        Keyword Arguments:
-            created_time {datetime.datetime} -- [description] (default: {None})
-            created_time_format {str} -- [description] (default: {"ts"})
-        """
-        self._root_path = os.path.abspath(root_path)
-        self._project_name = project_name
-        self._created_time_format = created_time_format
-        self._tmp_folder_word = "_tmp"
-        if created_time is None:
-            self._created_time = datetime.datetime.now()
-        else:
-            self._created_time = created_time
-        self._created_time_str = "{created_time}".format(
-            created_time=self._get_created_time_str())
-
-    def _get_created_time_str(self):
-        if self._created_time_format == "ts":
-            import calendar
-            ts = calendar.timegm(self._created_time.timetuple())
-            return str(ts)
-        else:
-            return self._created_time.strftime(self._created_time_format)
-
-    def get_project_folder(self):
-        return os.path.join(self._root_path, self._project_name)
-
-    def get_this_time_project_folder(self):
-        path = os.path.join(
-            self._root_path, self._project_name, self._created_time_str)
-        self._create_folder_without_error(path)
-        return path
-
-    def get_project_tmp_folder(self):
-        """[summary]
-        tmp folder should not keep for a long time.    
-        Returns:
-            [str] -- [tmp folder path]
-        """
-        this_time_project_folder = self.get_this_time_project_folder()
-        path = os.path.join(this_time_project_folder, self._tmp_folder_word)
-
-        self._create_folder_without_error(path)
-        return path
-
-    def _create_folder_without_error(self, full_file_path):
-        folder_path = os.path.dirname(full_file_path)
-        Path(folder_path).mkdir(exist_ok=True,  parents=True)
-
-    def _get_folder_file_with_latest_n_files_ordered_by_changed_time(self, n, folder_path):
-        files = [os.path.join(folder_path, f) for f in os.listdir(folder_path)
-                 if os.path.isfile(os.path.join(folder_path, f))]
-
-        files = sorted([f for f in files],
-                       key=lambda f: os.path.getmtime(f), reverse=True)[:n]
-        return files
