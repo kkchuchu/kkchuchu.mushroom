@@ -9,11 +9,11 @@ import numpy as np
 import shutil
 import pytz
 
-from ktool.util import time_converter
+from ktool.util import TS, IP
 
 
 class TestKToolUtil(unittest.TestCase):
-    
+
     @classmethod
     def setup_class(cls):
         cls.seed = 10
@@ -34,12 +34,20 @@ class TestKToolUtil(unittest.TestCase):
 
     def setUp(self):
         pass
-    
+
     def test_time_converter__normal(self):
-        e_d = datetime.datetime(year=2020, month=4, day=5, hour=10, tzinfo=pytz.utc)
-        
-        for t in ["2020-04-05T10:00:00.000Z", 
+        e_d = datetime.datetime(
+            year=2020, month=4, day=5, hour=10, tzinfo=pytz.utc)
+        e_t = e_d.timestamp()
+
+        for t in ["2020-04-05T10:00:00.000Z",
                   datetime.datetime(year=2020, month=4, day=5, hour=10, tzinfo=pytz.utc)]:
-            for type_ in ["dt", "ts"]:
-                d = time_converter(t, return_type=type_)
-                self.assertEqual(e_d, d)
+            d = TS.to(t, to_type=TS.DATETIME)
+            t = TS.to(t, to_type=TS.TIMESTAMP)
+
+            self.assertEqual(e_d, d)
+            self.assertEqual(e_t, t)
+
+    def test_ip_converter__normal(self):
+        self.assertEqual(IP.to(0xc0a80164), '192.168.1.100')
+        self.assertEqual(IP.to('10.0.0.1'), 167772161)

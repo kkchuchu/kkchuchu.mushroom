@@ -27,56 +27,90 @@ def set_spark_conf(spark_master_url, app_name, spark_serializer, spark_jars):
     return sc_conf
 
 
-def ip2int(addr):
-    return struct.unpack("!I", socket.inet_aton(addr))[0]
-
-
-def int2ip(addr):
-    return socket.inet_ntoa(struct.pack("!I", addr))
-
-
-class TimeConverter(object):
+class IP(object):
 
     @staticmethod
-    def toTS(t):
-        if isinstance(t, datetime.datetime):
-            return TimeConverter.datetime2timestamp(t)
+    def to(t):
+        # TODO: ipv6
+        if type(t) in IPType2Method:
+            return IPType2Method[type(t)](t)
         else:
-            return TimeConverter.iso8601toseconds(t)
+            raise NotSupportedError()
 
     @staticmethod
-    def toDT(t):
-        if isinstance(t, (float, int)):
-            return TimeConverter.timestamp2datetime(t)
-        elif isinstance(t, np.datetime64):
-            return TimeConverter.numpydatetime2timestamp(t)
+    def _ip2int(addr):
+        return struct.unpack("!I", socket.inet_aton(addr))[0]
+
+    @staticmethod
+    def _int2ip(addr):
+        return socket.inet_ntoa(struct.pack("!I", addr))
+
+
+IPType2Method = {
+    (str): IP._ip2int,
+    (int): IP._int2ip
+}
+
+
+class TS(object):
+    DATETIME = 1
+    TIMESTAMP = 2
+
+    @staticmethod
+    def to(t, to_type=DATETIME, tz=pytz.utc, time_format="%Y-%m-%d"):
+        r = None
+        if type(t) in TSType2Method:
+            r = TSType2Method[type(t)](t, tz, time_format)
         else:
-            return TimeConverter.str2datetime(t)
+            raise NotSupportedError()
+
+        if to_type == TS.DATETIME:
+            return r
+        elif to_type == TS.TIMESTAMP:
+            return datetime.datetime.timestamp(r)
+        else:
+            raise NotSupportedError()
 
     @staticmethod
-    def iso8601toseconds(t):
-        import dateutil.parser as dp
-        parsed_t = dp.parse(t)
-        t_in_seconds = parsed_t.strftime('%s')
-        return t_in_seconds
+    def _replace_tz(t, tz, time_format):
+        return t.replace(tzinfo=tz)
 
     @staticmethod
-    def datetime2timestamp(t):
-        return int(t.timestamp())
+    def _int_to_datetime(t, tz, time_format):
+        return datetime.datetime.utcfromtimestamp(
+            t).replace(tzinfo=pytz.utc)
 
     @staticmethod
-    def timestamp2datetime(t):
-        return datetime.datetime.fromtimestamp(t)
-
-    @staticmethod
-    def str2datetime(t):
-        return pd.to_datetime(t)
-
-    @staticmethod
-    def numpydatetime2timestamp(t: np.datetime64):
+    def _np64_to_datetime(t, tz, time_format):
         ts = (t - np.datetime64('1970-01-01T00:00:00Z')) / \
             np.timedelta64(1, 's')
-        return ts
+        r = datetime.datetime.utcfromtimestamp(
+            ts).replace(tzinfo=pytz.utc)
+
+        return r
+
+    @staticmethod
+    def _str_to_datetime(t, tz, time_format):
+        try:
+            # example: '2020-04-05T20:00:00.000Z', rfc822, iso8601
+            r = dateutil.parser.parse(t)
+        except ValueError:
+            r = datetime.datetime.strptime(
+                t, format=time_format).replace(tzinfo=tz)
+
+        return r
+
+
+TSType2Method = {
+    (datetime.datetime): TS._replace_tz,
+    (float, int): TS._int_to_datetime,
+    (np.datetime64): TS._np64_to_datetime,
+    (str): TS._str_to_datetime
+}
+
+
+class NotSupportedError(Exception):
+    pass
 
 
 def count_by(df: pd.DataFrame, by: list = []):
@@ -104,27 +138,14 @@ def chunks(lst, n):
         yield lst[i:i + n]
 
 
-def time_converter(t, return_type="dt", timezone=pytz.utc, time_format="%Y-%m-%d"):
-    r = None
-    if isinstance(t, (int, float)):
-        r = datetime.datetime.utcfromtimestamp(t).replace(tzinfo=pytz.utc)
-    elif isinstance(t, (datetime.datetime)):
-        r = t.replace(tzinfo=timezone)
-    elif isinstance(t, (str)):
-        try:
-            r = dateutil.parser.parse(t) # example: '2020-04-05T20:00:00.000Z', rfc822
-        except ValueError:
-            r = datetime.datetime.strptime(t, format=time_format)
-    else:
-        raise Exception("Not supported type")
-    if return_type == "dt":
-        return r
-    else:
-        return datetime.datetime.timestamp(r)
-
 def to_time_flow(df: pd.DataFrame,
                  group_by_col: list, agg: dict,
                  time_range_start=None, time_range_end=None, time_range_freq="1S"):
+    """
+    util.to_time_flow(alert_df,
+                 group_by_col=['key_as_string'],
+                 agg={'doc_count': 'max'}, time_range_freq='1H')
+    """
     if time_range_start is None:
         time_range_start = df[group_by_col].min()[0]
     if time_range_end is None:
