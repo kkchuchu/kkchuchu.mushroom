@@ -105,18 +105,22 @@ def chunks(lst, n):
 
 
 def time_converter(t, return_type="dt", timezone=pytz.utc, time_format="%Y-%m-%d"):
-    if return_type == "ts":
-        return datetime.datetime.timestamp(t)
-    elif return_type == "dt":
-        if isinstance(t, (int, float)):
-            return datetime.datetime.utcfromtimestamp(t).replace(tzinfo=pytz.utc)
-        elif isinstance(t, (datetime.datetime)):
-            return t.replace(tzinfo=timezone)
-        elif isinstance(t, (str)):
-            try:
-                return dateutil.parser.parse(t) # example: '2020-04-05T20:00:00.000Z', rfc822
-            except ValueError:
-                return datetime.datetime.strptime(t, format=time_format)
+    r = None
+    if isinstance(t, (int, float)):
+        r = datetime.datetime.utcfromtimestamp(t).replace(tzinfo=pytz.utc)
+    elif isinstance(t, (datetime.datetime)):
+        r = t.replace(tzinfo=timezone)
+    elif isinstance(t, (str)):
+        try:
+            r = dateutil.parser.parse(t) # example: '2020-04-05T20:00:00.000Z', rfc822
+        except ValueError:
+            r = datetime.datetime.strptime(t, format=time_format)
+    else:
+        raise Exception("Not supported type")
+    if return_type == "dt":
+        return r
+    else:
+        return datetime.datetime.timestamp(r)
 
 def to_time_flow(df: pd.DataFrame,
                  group_by_col: list, agg: dict,

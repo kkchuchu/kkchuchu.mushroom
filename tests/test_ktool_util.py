@@ -36,6 +36,10 @@ class TestKToolUtil(unittest.TestCase):
         pass
     
     def test_time_converter__normal(self):
-        d = time_converter("2020-04-05T10:00:00.000Z")
         e_d = datetime.datetime(year=2020, month=4, day=5, hour=10, tzinfo=pytz.utc)
-        self.assertEqual(e_d, d)
+        
+        for t in ["2020-04-05T10:00:00.000Z", 
+                  datetime.datetime(year=2020, month=4, day=5, hour=10, tzinfo=pytz.utc)]:
+            for type_ in ["dt", "ts"]:
+                d = time_converter(t, return_type=type_)
+                self.assertEqual(e_d, d)
