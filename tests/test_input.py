@@ -10,6 +10,7 @@ import shutil
 import pytz
 
 from ktool.util import TS, IP
+from ktool.input import DataManager
 
 
 class TestInput(unittest.TestCase):
@@ -30,10 +31,11 @@ class TestInput(unittest.TestCase):
             pass
 
     def tearDown(self):
+        self.input_.recycle()
         pass
 
     def setUp(self):
-        pass
+        self.input_ = DataManager(project_name="test", root_folder="./")
 
     def test_data_manager__normal(self):
         pass

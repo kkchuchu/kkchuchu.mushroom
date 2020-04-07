@@ -7,6 +7,7 @@ import urllib
 import pandas
 import datetime
 import logging
+import shutil
 
 
 from joblib import dump, load
@@ -158,9 +159,6 @@ class SQLDBConnector(BaseConnector):
         rows = con.execute(statement)
         return rows
     
-    def get_df(self, sql_statement, columns:list=None):
-        return pd.read_sql(sql_statement, con=self.engine)
-    
     def read(self, sql_statement, columns:list=None):
         rows = self.raw_sql(sql_statement)
         return pd.DataFrame(rows, columns=columns)
@@ -174,8 +172,12 @@ class ServiceConnector(BaseConnector):
 
     def get(self, uri, **kwargs):
         full_url = (self.host + uri).format(**kwargs)
+        logger.debug("get from url: %r", full_url)
         response = urllib.request.urlopen(full_url, timeout=self.timeout)
         return json.loads(response.read().decode('utf-8'))
+    
+    def post(self):
+        pass
 
 
 class SparkConnector(BaseConnector):
@@ -191,15 +193,22 @@ class SparkConnector(BaseConnector):
         
 class FileConnector(BaseConnector):
     
-    def __init__(self, folder_path=None):
+    def __init__(self, folder_path=None, delete_on_exit=False):
         super().__init__()
         self.folder_path = Path(folder_path)
         self._create_folder_without_error(self.folder_path)
         logger.debug("create folder: %r", self.folder_path)
+        self._delete_on_exit = delete_on_exit
         
-    def read(self, file_name):
-        file_path = self.folder_path / Path(file_name)
-        return pd.read_json(file_path)
+    def read(self, file_path):
+        abs_file_path = self.folder_path / Path(file_path)
+        logger.debug("read from %r", abs_file_path)
+        return pd.read_json(abs_file_path)
+    
+    def dump(self, df: pd.DataFrame, file_path):
+        abs_file_path = self.folder_path / Path(file_path)
+        logger.debug("save to %r", abs_file_path)
+        df.to_json(abs_file_path)
     
     def dump_df(self, df, file_name):
         file_path = self.folder_path / Path(file_name)
@@ -261,6 +270,14 @@ class FileConnector(BaseConnector):
     def _create_folder_without_error(self, full_file_path):
         folder_path = os.path.dirname(full_file_path)
         Path(folder_path).mkdir(exist_ok=True,  parents=True)
+        
+    def __del__(self):
+        if self._delete_on_exit:
+            self._recycle()
+        
+    def _recycle(self):
+        shutil.rmtree(self.folder_path, ignore_errors=True)
+        logger.debug("delete folder: %r", self.folder_path)
     
         
 class DataManager(object):
@@ -274,13 +291,10 @@ class DataManager(object):
         ts = int(TS.to(self._created_time, TS.TIMESTAMP))
             
         self._this_time_project_root_folder = Path(root_folder) / Path(project_name) / Path(str(ts))
-        self.project_workspace = FileConnector(self._this_time_project_root_folder)
-        if metadata_folder is not None:
-            self.meta_workspace = FileConnector(metadata_folder)
-        if input_folder is not None:
-            self.input_workspace = FileConnector(input_folder)
-        if output_folder is not None:
-            self.output_workspace = FileConnector(self._output_folder)
+        self.project_workspace = FileConnector(self._this_time_project_root_folder, delete_on_exit=True)
+        self.meta_workspace = None if metadata_folder is None else FileConnector(metadata_folder) 
+        self.input_workspace = None if input_folder is None else FileConnector(input_folder) 
+        self.output_workspace = None if output_folder is None else FileConnector(output_folder) 
         self.connectors = {}
             
     def _using_method_to_dest(self, dest, method, *args, **kwargs):
@@ -315,4 +329,20 @@ class DataManager(object):
     
     def __exit__(self, type, value, traceback):
         pass
+    
+    def recycle(self):
+        del self.project_workspace
+        if self.meta_workspace is not None:
+            del self.meta_workspace
+        if self.input_workspace is not None:
+            del self.input_workspace
+        if self.output_workspace is not None:
+            del self.output_workspace
+            
+        for name, connector in self.connectors.items():
+            try:
+                del connector
+            except Exception as e:
+                logger.debug("del %r error", name)
+                raise e
         
