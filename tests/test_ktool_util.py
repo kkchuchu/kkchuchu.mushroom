@@ -51,3 +51,4 @@ class TestKToolUtil(unittest.TestCase):
     def test_ip_converter__normal(self):
         self.assertEqual(IP.to(0xc0a80164), '192.168.1.100')
         self.assertEqual(IP.to('10.0.0.1'), 167772161)
+        self.assertEqual(IP.to(167772161), '10.0.0.1')

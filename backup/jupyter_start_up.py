@@ -19,6 +19,7 @@ from matplotlib import pyplot as plt
 
 import warnings
 warnings.filterwarnings(action='once')
+warnings.filterwarnings("ignore", message="numpy.ufunc size changed")
 
 from IPython.core.interactiveshell import InteractiveShell
 InteractiveShell.ast_node_interactivity = "all"
