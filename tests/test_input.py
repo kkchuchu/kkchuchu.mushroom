@@ -10,7 +10,9 @@ import shutil
 import pytz
 
 from ktool.util import TS, IP
-from ktool.input import DataManager
+from ktool.input import DataManager, RemoteSFTPConnector
+
+import paramiko
 
 
 class TestInput(unittest.TestCase):
@@ -37,5 +39,9 @@ class TestInput(unittest.TestCase):
     def setUp(self):
         self.input_ = DataManager(project_name="test", root_folder="./")
 
-    def test_data_manager__normal(self):
+    def test_remote_sftp_connector__auth_fail(self):
+        try:
+            con = RemoteSFTPConnector('localhost')
+        except paramiko.ssh_exception.SSHException as e:
+            pass
         pass
