@@ -202,7 +202,7 @@ class RemoteSFTPConnector(BaseConnector):
                        password=password,
                        allow_agent=allow_agent,
                        look_for_keys=look_for_keys)
-        self.sftp_client = client.open_sftp()
+        self.sftp_client = self.client.open_sftp()
         
     def read(self,  file_path):
         self.sftp_client.open(file_path)
