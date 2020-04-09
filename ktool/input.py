@@ -139,8 +139,13 @@ class SQLDBConnector(BaseConnector):
         self.db_session = scoped_session(sessionmaker(
             autocommit=autocommit, autoflush=autoflush, bind=self.engine))
 
-    def getSession(self):
-        return self.db_session
+    @property
+    def db_session(self):
+        return self._db_session
+    
+    @db_session.setter
+    def db_session(self, new_db_session):
+        self._db_session = new_db_session
 
     def closeSession(self):
         return self.db_session.close()
