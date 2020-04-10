@@ -16,11 +16,6 @@ import numpy as np
 from sklearn.tree import _tree
 
 
-def startup():
-    import time
-    print(123)
-    pass
-
 def set_spark_conf(spark_master_url, app_name, spark_serializer, spark_jars):
     from pyspark import SparkConf
     sc_conf = SparkConf() \
@@ -36,10 +31,10 @@ class IP(object):
     @staticmethod
     def to(t):
         # TODO: ipv6
-        if type(t) in IPType2Method:
-            return IPType2Method[type(t)](t)
-        else:
-            raise NotSupportedError()
+        for type_, method in IPType2Method.items():
+            if isinstance(t, type_):
+                return method(t)
+        raise NotSupportedError()
 
     @staticmethod
     def _ip2int(addr):
@@ -63,8 +58,10 @@ class TS(object):
     @staticmethod
     def to(t, to_type=DATETIME, tz=pytz.utc, time_format="%Y-%m-%d"):
         r = None
-        if type(t) in TSType2Method:
-            r = TSType2Method[type(t)](t, tz, time_format)
+        for type_, method in TSType2Method.items():
+            if isinstance(t, type_):
+                r = method(t, tz, time_format)
+                break
         else:
             raise NotSupportedError()
 
