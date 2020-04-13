@@ -23,7 +23,7 @@ from elasticsearch import Elasticsearch, helpers
 
 from ktool.util import NotSupportedError, TS
 
-logger = logging.getLogger("jupyter")
+logger = logging.getLogger()
 
 
 class BaseConnector(object):
@@ -32,10 +32,10 @@ class BaseConnector(object):
         self.timeout = timeout
 
     def read(self, path):
-        pass
+        raise Exception()
 
-    def dump(self, df, path):
-        pass
+    def dump(self, df: pd.DataFrame, path):
+        raise Exception()
 
 
 class ESConnector(BaseConnector):
@@ -142,7 +142,7 @@ class SQLDBConnector(BaseConnector):
     @property
     def db_session(self):
         return self._db_session
-    
+
     @db_session.setter
     def db_session(self, new_db_session):
         self._db_session = new_db_session
@@ -203,18 +203,18 @@ class RemoteSFTPConnector(BaseConnector):
         self.client = paramiko.SSHClient()
         self.client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
         self.client.connect(hostname,
-                       username=username,
-                       password=password,
-                       allow_agent=allow_agent,
-                       look_for_keys=look_for_keys)
+                            username=username,
+                            password=password,
+                            allow_agent=allow_agent,
+                            look_for_keys=look_for_keys)
         self.sftp_client = self.client.open_sftp()
-        
+
     def read(self,  file_path):
         self.sftp_client.open(file_path)
-        
+
     def __del__(self):
         self._recycle()
-    
+
     def _recycle(self):
         try:
             self.sftp_client.close()
@@ -242,12 +242,8 @@ class FileConnector(BaseConnector):
 
     def dump(self, df: pd.DataFrame, file_path):
         abs_file_path = self.folder_path / Path(file_path)
-        logger.debug("save to %r", abs_file_path)
-        df.to_json(abs_file_path)
-
-    def dump_df(self, df, file_name):
-        file_path = self.folder_path / Path(file_name)
-        df.to_json(file_path)
+        df.to_json(path_or_buf=abs_file_path)
+        return abs_file_path
 
     def get_file_content(self, file_name):
         file_path = self.fold_path / Path(file_name)
@@ -255,14 +251,14 @@ class FileConnector(BaseConnector):
             for line in f:
                 yield line
 
-    def read_json(self, file, is_full_file_path=True):
+    def read_by_joblib(self, file, is_full_file_path=True):
         if is_full_file_path:
             file_path = file
         else:
             file_path = self.folder_path / Path(file)
         return load(file_path)
 
-    def dump_json(self, file, is_full_file_path=True):
+    def dump_by_joblib(self, file, is_full_file_path=True):
         if is_full_file_path:
             file_path = file
         else:
@@ -305,8 +301,7 @@ class FileConnector(BaseConnector):
             return [f[0] for f in files]
 
     def _create_folder_without_error(self, full_file_path):
-        folder_path = os.path.dirname(full_file_path)
-        Path(folder_path).mkdir(exist_ok=True,  parents=True)
+        Path(full_file_path).mkdir(exist_ok=True,  parents=True)
 
     def __del__(self):
         if self._delete_on_exit:
