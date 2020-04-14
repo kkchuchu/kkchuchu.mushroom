@@ -10,7 +10,9 @@ import shutil
 import pytz
 import random
 
-from ktool.util import TS, IP
+import pandas as pd
+
+from ktool.util import TS, IP, to_flow
 
 
 class TestKToolUtil(unittest.TestCase):
@@ -35,6 +37,9 @@ class TestKToolUtil(unittest.TestCase):
 
     def setUp(self):
         random.seed(self.seed)
+        self.df = pd.DataFrame()
+        index = pd.date_range('1/1/2000', periods=9, freq='T')
+        self.ds = pd.Series(range(9), index=index)
 
     def test_time_converter__normal(self):
         e_d = datetime.datetime(
@@ -53,3 +58,7 @@ class TestKToolUtil(unittest.TestCase):
         self.assertEqual(IP.to(0xc0a80164), '192.168.1.100')
         self.assertEqual(IP.to('10.0.0.1'), 167772161)
         self.assertEqual(IP.to(167772161), '10.0.0.1')
+
+    def test_to_flow__normal(self):
+        flow_df = to_flow(self.ds, resample_freq="1H",
+                          resample_agg=["max", "count"])

@@ -158,6 +158,38 @@ def to_time_flow(df: pd.DataFrame,
     return trend
 
 
+def to_flow(df: (pd.DataFrame, pd.Series),
+            group_by_col: str=None, deduplicate_agg: dict=None,
+            resample_freq="1T", resample_agg: list=None,
+            ):
+    """
+    Ref: https://pandas.pydata.org/docs/user_guide/timeseries.html
+    
+    Arguments:
+        df {pd.DataFrame} -- [description]
+        group_by_col {str} -- [description]
+        deduplicate_agg {dict} -- [description]
+    
+    Keyword Arguments:
+        resample_freq {str} -- [description] (default: {"1T"})
+        resample_agg {list} -- [description] (default: {None})
+    
+    Returns:
+        [type] -- [description]
+    """
+    if isinstance(df, (pd.DataFrame)):
+        t1 = df.groupby(group_by_col).agg(deduplicate_agg) # deduplicate
+        flow_field = list(deduplicate_agg.keys())[0]
+        t1 = pd.Series(t1[flow_field].values, index=t1.index.values)
+    elif isinstance(df, (pd.Series)):
+        t1 = df
+    else:
+        raise NotSupportedError()
+    if "count" not in resample_agg:
+        resample_agg.append("count")
+    return t1.resample(resample_freq).aggregate(resample_agg)
+
+
 def display_tree(a_tree):
     import graphviz
     from sklearn.tree import export_graphviz
