@@ -170,8 +170,10 @@ class SQLDBConnector(BaseConnector):
 
 class ServiceConnector(BaseConnector):
 
-    def __init__(self, host):
+    def __init__(self, host, headers=None):
         self.host = host
+        self._headers = headers
+        self._coding_method = "utf-8"
         super().__init__()
 
     def get(self, uri, **kwargs):
@@ -180,8 +182,16 @@ class ServiceConnector(BaseConnector):
         response = urllib.request.urlopen(full_url, timeout=self.timeout)
         return json.loads(response.read().decode('utf-8'))
 
-    def post(self):
-        pass
+    def post(self, uri, data, headers=None, **uri_kwargs):
+        full_url = (self.host + uri).format(**uri_kwargs)
+        logger.debug("get from url: %r", full_url)
+        if headers is None:
+            headers = self._headers
+    
+        data = json.dumps(data).encode(encoding=self._coding_method)
+        req = urllib.request.Request(full_url, data=data, headers=headers)
+        response = urllib.request.urlopen(req)
+        return response.read().decode("utf-8")
 
 
 class SparkConnector(BaseConnector):
