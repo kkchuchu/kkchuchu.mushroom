@@ -47,13 +47,28 @@ class TestKToolUtil(unittest.TestCase):
         e_t = e_d.timestamp()
 
         for t in ["2020-04-05T10:00:00.000Z",
-                  datetime.datetime(year=2020, month=4, day=5, hour=10, tzinfo=pytz.utc)]:
+                  datetime.datetime(year=2020, month=4, day=5, hour=10, tzinfo=pytz.utc), 
+                  datetime.datetime.strptime("20200405100000", "%Y%m%d%H%M%S"),
+                  pytz.timezone('Asia/Shanghai').localize(datetime.datetime.strptime("20200405180000", "%Y%m%d%H%M%S")),
+                  ]:
             d = TS.to(t, to_type=TS.DATETIME)
             t = TS.to(t, to_type=TS.TIMESTAMP)
 
             self.assertEqual(e_d, d)
             self.assertEqual(e_t, t)
 
+    def test_time_converter__ts_tz_is_str(self):
+        e_d = datetime.datetime(
+            year=2020, month=4, day=5, hour=10, tzinfo=pytz.utc)
+        e_t = e_d.timestamp()
+
+        t = datetime.datetime(year=2020, month=4, day=5, hour=18)
+        d = TS.to(t, ts_tz="Asia/Taipei", to_type=TS.DATETIME)
+        t = TS.to(t, ts_tz="Asia/Taipei", to_type=TS.TIMESTAMP)
+
+        self.assertEqual(e_d, d)
+        self.assertEqual(e_t, t)
+            
     def test_ip_converter__normal(self):
         self.assertEqual(IP.to(0xc0a80164), '192.168.1.100')
         self.assertEqual(IP.to('10.0.0.1'), 167772161)

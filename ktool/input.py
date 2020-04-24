@@ -207,7 +207,7 @@ class SparkConnector(BaseConnector):
 
 class RemoteSFTPConnector(BaseConnector):
 
-    def __init__(self, hostname, username=None, password=None, allow_agent=False, look_for_keys=False):
+    def __init__(self, hostname, port=22, username=None, password=None, allow_agent=False, look_for_keys=False):
         super().__init__()
         import paramiko
         self.client = paramiko.SSHClient()
@@ -216,7 +216,8 @@ class RemoteSFTPConnector(BaseConnector):
                             username=username,
                             password=password,
                             allow_agent=allow_agent,
-                            look_for_keys=look_for_keys)
+                            look_for_keys=look_for_keys, 
+                            port=port)
         self.sftp_client = self.client.open_sftp()
 
     def read(self,  file_path):
