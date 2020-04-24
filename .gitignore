@@ -8,3 +8,4 @@ tags
 tags.lock
 ktool.egg-info/*
 input/*
+build/*
