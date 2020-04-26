@@ -1,8 +1,6 @@
 source ~/workspace/mushroom/backup/bashrc
 
 
-. ~/.virtualenvs/k_lab/bin/activate && nohup python3 -m jupyter notebook --config ~/.jupyter_notebook_config.py --allow-root >&~/.jupyter/serviceh.log >&~/.jupyservice.log &
-
 # Setting PATH for Python 3.6
 # The original version is saved in .profile.pysave
 PATH="/Library/Frameworks/Python.framework/Versions/3.6/bin:${PATH}"
