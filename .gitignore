@@ -9,3 +9,4 @@ tags.lock
 ktool.egg-info/*
 input/*
 build/*
+.vscode
