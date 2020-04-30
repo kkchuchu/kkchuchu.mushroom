@@ -127,7 +127,7 @@ class TS(object):
 
 TSType2Method = {
     (datetime.datetime): TS._replace_tz,
-    (float, int): TS._int_to_datetime,
+    (float, np.integer, int): TS._int_to_datetime,
     (np.datetime64): TS._np64_to_datetime,
     (str): TS._str_to_datetime
 }
