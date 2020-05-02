@@ -1,5 +1,6 @@
 ### Permutation
 # from itertools import permutations
+# Generation in lexicographic order Algorithm
 # algo for itertools.permutations: https://en.wikipedia.org/wiki/Permutation#Generation_in_lexicographic_order
 
 def toString(List): 
