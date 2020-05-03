@@ -14,9 +14,9 @@ def toString(List):
 def permute(a, l, r): 
     print(a, l, r)
     if l==r: 
-        print toString(a) 
+        print(a) 
     else: 
-        for i in xrange(l,r+1): 
+        for i in range(l,r+1): 
             a[l], a[i] = a[i], a[l] 
             print("for 1st", a, i, l)
             permute(a, l+1, r) 
@@ -24,11 +24,20 @@ def permute(a, l, r):
             print("for 2ed", a, i, l)
 
 
+def permutation(*args):
+    result = [[]]
+    for arr in args:
+        result = [x+[y] for x in result for y in arr]
+    print(result)
+        
+permutation([1,2,3], [4, 5])
+
+
 # Driver program to test the above function 
 string = "ABC"
 n = len(string) 
 a = list(string) 
-permute(a, 0, n-1) 
+# permute(a, 0, n-1) 
 
 
 ### product
