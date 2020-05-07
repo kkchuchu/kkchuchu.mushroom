@@ -242,7 +242,7 @@ class FileConnector(BaseConnector):
     def __init__(self, folder_path=None, delete_on_exit=False):
         super().__init__()
         self.folder_path = Path(folder_path)
-        self._create_folder_without_error(self.folder_path)
+        # self._create_folder_without_error(self.folder_path)
         logger.debug("create folder: %r", self.folder_path)
         self._delete_on_exit = delete_on_exit
 
@@ -253,6 +253,8 @@ class FileConnector(BaseConnector):
 
     def dump(self, df: pd.DataFrame, file_path):
         abs_file_path = self.folder_path / Path(file_path)
+        folder_path = os.path.dirname(abs_file_path)
+        self._create_folder_without_error(folder_path)
         df.to_json(path_or_buf=abs_file_path)
         return abs_file_path
 

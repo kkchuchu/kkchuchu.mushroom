@@ -93,6 +93,7 @@ class TS(object):
 
     @staticmethod
     def _replace_tz(t, ts_tz, time_format):
+        print(t, ts_tz, time_format)
         if t.tzinfo is None:
             t = ts_tz.localize(t)
         if t.tzinfo != pytz.utc:
@@ -108,8 +109,7 @@ class TS(object):
     def _np64_to_datetime(t, tz, time_format):
         ts = (t - np.datetime64('1970-01-01T00:00:00Z')) / \
             np.timedelta64(1, 's')
-        r = datetime.datetime.utcfromtimestamp(
-            ts).replace(tzinfo=tz)
+        r = pytz.utc.localize(datetime.datetime.utcfromtimestamp(ts)).astimezone(tz)
 
         return r
 
@@ -195,7 +195,7 @@ def to_flow(df: (pd.DataFrame, pd.Series),
         deduplicate_agg {dict} -- [description]
     
     Keyword Arguments:
-        resample_freq {str} -- [description] (default: {"1T"})
+        resample_freq {str} -- [description] (default: {"1T": 1minutes, "30S": 30 seconds})
         resample_agg {list} -- [description] (default: {None})
     
     Returns:
@@ -212,7 +212,8 @@ def to_flow(df: (pd.DataFrame, pd.Series),
     if "count" not in resample_agg:
         resample_agg.append("count")
     t1 = t1.resample(resample_freq).aggregate(resample_agg)
-    t1.tz_localize(timezone)
+    t1 = t1.tz_localize(timezone)
+    t1['_date'] = pd.to_datetime(t1.index, utc = True)
     return t1
 
 

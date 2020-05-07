@@ -50,6 +50,7 @@ class TestKToolUtil(unittest.TestCase):
                   datetime.datetime(year=2020, month=4, day=5, hour=10, tzinfo=pytz.utc), 
                   datetime.datetime.strptime("20200405100000", "%Y%m%d%H%M%S"),
                   pytz.timezone('Asia/Shanghai').localize(datetime.datetime.strptime("20200405180000", "%Y%m%d%H%M%S")),
+                  np.datetime64('2020-04-05T10:00:00.000000000')
                   ]:
             d = TS.to(t, to_type=TS.DATETIME)
             t = TS.to(t, to_type=TS.TIMESTAMP)
