@@ -93,7 +93,6 @@ class TS(object):
 
     @staticmethod
     def _replace_tz(t, ts_tz, time_format):
-        print(t, ts_tz, time_format)
         if t.tzinfo is None:
             t = ts_tz.localize(t)
         if t.tzinfo != pytz.utc:
