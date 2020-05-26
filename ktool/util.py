@@ -56,7 +56,7 @@ class TS(object):
     TIMESTAMP = 2
 
     @staticmethod
-    def to(t, to_type=DATETIME, ts_tz=pytz.utc, time_format="%Y-%m-%d"):
+    def to(t, to_type=DATETIME, ts_tz=pytz.utc, format=None, *args, **kwargs):
         """[summary]
 
         Arguments:
@@ -64,7 +64,7 @@ class TS(object):
 
         Keyword Arguments:
             to_type {[type]} -- [description] (default: {DATETIME})
-            ts_tz {[type]} -- [description] (default: {pytz.utc})
+            ts_tz {str, pytz.utc like} -- Support str and pytz.utc like object (default: {pytz.utc})
             time_format {str} -- [description] (default: {"%Y-%m-%d"})
 
         Raises:
@@ -73,63 +73,33 @@ class TS(object):
         Returns:
             [datetime] -- depends on to_type with utc timezone
         """
+        
+        # convert timezone
         if isinstance(ts_tz, (str)):
             ts_tz = pytz.timezone(ts_tz)
             
-        r = None
-        for type_, method in TSType2Method.items():
-            if isinstance(t, type_):
-                r = method(t, ts_tz, time_format)
-                break
+        r = pd.to_datetime(t, format=format, **kwargs)
+        if r.tzinfo is None:
+            r = r.tz_localize(ts_tz)
         else:
-            raise NotSupportedError()
-
+            r = r.astimezone(ts_tz)
+            
+            
         if to_type == TS.DATETIME:
-            return r
+            pass
         elif to_type == TS.TIMESTAMP:
-            return datetime.datetime.timestamp(r)
+            r = datetime.datetime.timestamp(r)
         else:
             raise NotSupportedError()
+        return r
 
     @staticmethod
-    def _replace_tz(t, ts_tz, time_format):
-        if t.tzinfo is None:
+    def _replace_tz(t, ts_tz):
+        if t.tzinfo is None: # set timezone
             t = ts_tz.localize(t)
-        if t.tzinfo != pytz.utc:
+        if t.tzinfo != pytz.utc: # convert timezone
             t = t.astimezone(pytz.utc)
         return t
-
-    @staticmethod
-    def _int_to_datetime(t, tz, time_format):
-        return datetime.datetime.utcfromtimestamp(
-            t).replace(tzinfo=tz)
-
-    @staticmethod
-    def _np64_to_datetime(t, tz, time_format):
-        ts = (t - np.datetime64('1970-01-01T00:00:00Z')) / \
-            np.timedelta64(1, 's')
-        r = pytz.utc.localize(datetime.datetime.utcfromtimestamp(ts)).astimezone(tz)
-
-        return r
-
-    @staticmethod
-    def _str_to_datetime(t, tz, time_format):
-        try:
-            # example: '2020-04-05T20:00:00.000Z', rfc822, iso8601
-            r = dateutil.parser.parse(t)
-        except ValueError:
-            r = datetime.datetime.strptime(
-                t, format=time_format).replace(tzinfo=tz)
-
-        return r
-
-
-TSType2Method = {
-    (datetime.datetime): TS._replace_tz,
-    (float, np.integer, int): TS._int_to_datetime,
-    (np.datetime64): TS._np64_to_datetime,
-    (str): TS._str_to_datetime
-}
 
 
 class NotSupportedError(Exception):
@@ -161,25 +131,6 @@ def chunks(lst, n):
         yield lst[i:i + n]
 
 
-def to_time_flow(df: pd.DataFrame,
-                 group_by_col: list, agg: dict,
-                 time_range_start=None, time_range_end=None, time_range_freq="1S"):
-    """
-    util.to_time_flow(alert_df,
-                 group_by_col=['key_as_string'],
-                 agg={'doc_count': 'max'}, time_range_freq='1H')
-    """
-    if time_range_start is None:
-        time_range_start = df[group_by_col].min()[0]
-    if time_range_end is None:
-        time_range_end = df[group_by_col].max()[0]
-    new_ix = pd.date_range(
-        time_range_start, time_range_end, freq=time_range_freq)
-    trend = df.groupby(group_by_col).agg(agg).reindex(new_ix, fill_value=0.)
-
-    return trend
-
-
 def to_flow(df: (pd.DataFrame, pd.Series),
             group_by_col: str=None, deduplicate_agg: dict=None,
             resample_freq="1T", resample_agg: list=None,
@@ -187,18 +138,20 @@ def to_flow(df: (pd.DataFrame, pd.Series),
             ):
     """
     Ref: https://pandas.pydata.org/docs/user_guide/timeseries.html
-    
-    Arguments:
-        df {pd.DataFrame} -- [description]
-        group_by_col {str} -- [description]
-        deduplicate_agg {dict} -- [description]
-    
-    Keyword Arguments:
-        resample_freq {str} -- [description] (default: {"1T": 1minutes, "30S": 30 seconds})
-        resample_agg {list} -- [description] (default: {None})
-    
+
+    Args:
+        df ([type]): [description]
+        group_by_col (str, optional): [description]. Defaults to None.
+        deduplicate_agg (dict, optional): [description]. Defaults to None.
+        resample_freq (str, optional): [description]. Defaults to "1T".
+        resample_agg (list, optional): [description]. Defaults to None.
+        timezone (str, optional): [description]. Defaults to "UTC".
+
+    Raises:
+        NotSupportedError: [description]
+
     Returns:
-        [type] -- [description]
+        [type]: [description]
     """
     if isinstance(df, (pd.DataFrame)):
         t1 = df.groupby(group_by_col).agg(deduplicate_agg) # deduplicate

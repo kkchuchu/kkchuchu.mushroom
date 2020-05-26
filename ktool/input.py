@@ -40,7 +40,7 @@ class BaseConnector(object):
 
 class ESConnector(BaseConnector):
 
-    def __init__(self, host, port=9200, timeout=60, default_index=None):
+    def __init__(self, host, port=9200, timeout=86400, default_index=None):
         self.elasticsearch_hosts = [host]
         self.port = port
         self.timeout = timeout
@@ -50,10 +50,10 @@ class ESConnector(BaseConnector):
         self.es = Elasticsearch(
             hosts=self.elasticsearch_hosts, port=self.port, timeout=self.timeout)
 
-    def get_response_generator(self, query, index):
+    def get_response_generator(self, body=None, index=None):
         if index is None:
             index = self.index
-        res = helpers.scan(client=self.es, query=query, index=index, preserve_order=True,
+        res = helpers.scan(client=self.es, query=body, index=index, preserve_order=True,
                            scroll=self.scroll, size=self.size)
         return res
 
